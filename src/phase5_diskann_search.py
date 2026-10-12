@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import os
+import shlex
 import subprocess
 import sys
 import time
@@ -32,8 +33,147 @@ from src.phase1_2_evaluation import load_fvecs, load_ivecs, compute_sha256
 from src.phase5_prepare_cold import write_diskann_bin, read_diskann_bin
 
 
-DISKANN_REPO_PATH_WSL = "/home/shivamgupta/diskann-work/DiskANN"
-DISKANN_QUERY_BIN_WSL = f"{DISKANN_REPO_PATH_WSL}/target/release/diskann_query"
+# ==============================================================================
+# Environment Configuration & Path Resolution (Item 0)
+# ==============================================================================
+
+# Primary environment variable: DISKANN_QUERY_BIN
+# Legacy alias: DISKANN_QUERY_BIN_WSL
+# Repository path variables: DISKANN_REPO_PATH_WSL, DISKANN_REPO_WSL
+def get_diskann_query_bin() -> str:
+    """
+    Resolves the DiskANN query executable path with documented precedence:
+    1. DISKANN_QUERY_BIN (primary mentor-specified environment variable)
+    2. DISKANN_QUERY_BIN_WSL (legacy backward-compatible alias)
+    3. Derived from DISKANN_REPO_PATH_WSL or DISKANN_REPO_WSL environment variables
+    4. Portable fallback default: ~/diskann-work/DiskANN/target/release/diskann_query
+    
+    Any personal paths (e.g. /home/<user>/...) are normalized to ~/
+    to ensure portability across machines and user accounts.
+    """
+    raw_bin = (
+        os.environ.get("DISKANN_QUERY_BIN")
+        or os.environ.get("DISKANN_QUERY_BIN_WSL")
+    )
+    if raw_bin and raw_bin.strip():
+        bin_path = raw_bin.strip()
+    else:
+        repo = os.environ.get("DISKANN_REPO_PATH_WSL") or os.environ.get("DISKANN_REPO_WSL")
+        if repo and repo.strip():
+            bin_path = f"{repo.strip().rstrip('/')}/target/release/diskann_query"
+        else:
+            bin_path = "~/diskann-work/DiskANN/target/release/diskann_query"
+
+    # Normalize any /home/<user>/... path to portable ~/ representation
+    if bin_path.startswith("/home/"):
+        parts = bin_path.split("/", 3)
+        if len(parts) >= 4:
+            bin_path = f"~/{parts[3]}"
+
+    return bin_path
+
+
+DISKANN_QUERY_BIN = get_diskann_query_bin()
+# Maintain backward-compatible aliases
+DISKANN_QUERY_BIN_WSL = DISKANN_QUERY_BIN
+DISKANN_REPO_PATH_WSL = os.environ.get("DISKANN_REPO_PATH_WSL", "~/diskann-work/DiskANN").rstrip("/")
+
+
+def is_windows_native_executable(bin_path: str) -> bool:
+    """Checks whether bin_path is a native Windows executable that exists and is runnable."""
+    p = Path(bin_path)
+    if p.is_file():
+        if p.suffix.lower() in [".exe", ".bat", ".cmd"] or os.access(str(p), os.X_OK):
+            return True
+    return False
+
+
+def format_wsl_command(bin_path: str, args: List[str]) -> List[str]:
+    """
+    Constructs a robust WSL command array via 'wsl bash -c':
+    1. Guarantees ~/ tilde expansion in bash without leaking personal paths.
+    2. Safely quotes all arguments using shlex to handle spaces and special characters.
+    """
+    if bin_path.startswith("~/"):
+        sub_path = bin_path[2:]
+        quoted_bin = f"~/{shlex.quote(sub_path)}"
+    else:
+        quoted_bin = shlex.quote(bin_path)
+
+    quoted_args = " ".join(shlex.quote(a) for a in args)
+    bash_cmd_str = f"{quoted_bin} {quoted_args}" if quoted_args else quoted_bin
+    return ["wsl", "bash", "-c", bash_cmd_str]
+
+
+def validate_diskann_executable(bin_path: str) -> Tuple[bool, bool, str]:
+    """
+    Validates that the configured DiskANN query binary can be found and launched.
+    Returns (is_valid, is_windows_native, error_message).
+    """
+    if is_windows_native_executable(bin_path):
+        try:
+            res = subprocess.run([bin_path, "--help"], capture_output=True, text=True, check=False)
+            if res.returncode == 0 or "--index-prefix" in res.stdout or "--index-prefix" in res.stderr:
+                return True, True, ""
+            return False, True, f"Native Windows binary '{bin_path}' failed --help check (code {res.returncode}): {res.stderr.strip()}"
+        except Exception as e:
+            return False, True, f"Failed to launch native Windows executable '{bin_path}': {e}"
+
+    # WSL mode validation
+    # 1. Check if executable exists and has execute permissions in WSL
+    if bin_path.startswith("~/"):
+        test_path = f"$HOME/{shlex.quote(bin_path[2:])}"
+    else:
+        test_path = shlex.quote(bin_path)
+
+    cmd_test = ["wsl", "bash", "-c", f"test -x {test_path}"]
+    res_test = subprocess.run(cmd_test, capture_output=True, text=True, check=False)
+    if res_test.returncode != 0:
+        return (
+            False,
+            False,
+            f"DiskANN query executable not found or not executable in WSL at '{bin_path}'. "
+            f"Please ensure DiskANN is built or configure DISKANN_QUERY_BIN to the valid path of diskann_query."
+        )
+
+    # 2. Check if it launches with --help
+    cmd_run = format_wsl_command(bin_path, ["--help"])
+    res_run = subprocess.run(cmd_run, capture_output=True, text=True, check=False)
+    if res_run.returncode == 0 or "--index-prefix" in res_run.stdout:
+        return True, False, ""
+
+    return (
+        False,
+        False,
+        f"DiskANN query executable in WSL failed launch check (code {res_run.returncode}): {res_run.stderr.strip()}"
+    )
+
+
+def resolve_diskann_index_prefix(index_prefix: Path | str | None = None) -> Path:
+    """
+    Resolves the DiskANN index prefix with documented precedence:
+    1. Explicit index_prefix argument (if provided and not None)
+    2. DISKANN_INDEX_PREFIX environment variable
+    3. Project-relative default: workspace_root / "results/phase5_diskann/index/cold_disk_index_tuned"
+    
+    Returns a resolved absolute Path.
+    """
+    if index_prefix is not None:
+        p = Path(index_prefix)
+        if not p.is_absolute():
+            p = workspace_root / p
+    elif "DISKANN_INDEX_PREFIX" in os.environ and os.environ["DISKANN_INDEX_PREFIX"].strip():
+        env_val = os.environ["DISKANN_INDEX_PREFIX"].strip()
+        p = Path(env_val)
+        if not p.is_absolute():
+            p = workspace_root / p
+    else:
+        p = workspace_root / "results/phase5_diskann/index/cold_disk_index_tuned"
+
+    return p.resolve()
+
+
+DISKANN_INDEX_PREFIX = str(resolve_diskann_index_prefix())
 
 
 @dataclass
@@ -47,8 +187,8 @@ class DiskANNSearchResult:
     global_ids: np.ndarray     # shape (N, k), int64
     distances: np.ndarray      # shape (N, k), float32
     latencies_micros: np.ndarray  # shape (N,), uint64
-    total_elapsed_ms: f64
-    qps: f64
+    total_elapsed_ms: float
+    qps: float
 
 
 class ColdDiskANNIndex:
@@ -58,17 +198,27 @@ class ColdDiskANNIndex:
 
     def __init__(
         self,
-        index_prefix: Path | str,
+        index_prefix: Path | str | None = None,
         id_map_path: Path | str | None = None,
         cold_manifest_path: Path | str | None = None,
         num_threads: int = 8,
         cache_nodes: int = 2000,
+        query_bin: str | None = None,
     ):
-        self.index_prefix = Path(index_prefix).resolve()
+        self.index_prefix = resolve_diskann_index_prefix(index_prefix)
         self.num_threads = num_threads
         self.cache_nodes = cache_nodes
         self.is_open = False
-        
+        self.last_command: List[str] | None = None
+        self.last_elapsed_wall_ms: float = 0.0
+
+        # Resolve and validate executable
+        self.query_bin = query_bin or get_diskann_query_bin()
+        is_valid, is_win, err_msg = validate_diskann_executable(self.query_bin)
+        if not is_valid:
+            raise FileNotFoundError(f"Cannot initialize ColdDiskANNIndex: {err_msg}")
+        self.is_windows_native = is_win
+
         # Resolve ID mapping path
         if id_map_path is None:
             self.id_map_path = workspace_root / "results/phase5_diskann/metadata/id_mapping.json"
@@ -87,12 +237,24 @@ class ColdDiskANNIndex:
         self.load()
 
     def _to_wsl_path(self, path: Path | str) -> str:
-        """Converts Windows Path to WSL path (/mnt/c/...)."""
-        p = str(Path(path).resolve()).replace("\\", "/")
-        if len(p) >= 2 and p[1] == ":":
-            drive = p[0].lower()
-            return f"/mnt/{drive}{p[2:]}"
-        return p
+        """
+        Converts a path for WSL execution.
+        If the path is within workspace_root, returns a relative path starting with './'
+        (e.g., './results/phase5_diskann/index/cold_disk_index_tuned').
+        This ensures that personal paths (like /home/<user> or C:/Users/<user>) are not embedded
+        in the executed search command.
+        If outside workspace_root, converts to a standard WSL mount path (/mnt/<drive>/...).
+        """
+        resolved = Path(path).resolve()
+        try:
+            rel = resolved.relative_to(workspace_root)
+            return f"./{rel.as_posix()}"
+        except ValueError:
+            p = str(resolved).replace("\\", "/")
+            if len(p) >= 2 and p[1] == ":":
+                drive = p[0].lower()
+                return f"/mnt/{drive}{p[2:]}"
+            return p
 
     def load(self) -> None:
         """Verifies index artifact files on disk and loads mapping metadata."""
@@ -107,7 +269,11 @@ class ColdDiskANNIndex:
             (pq_pivots, "pq pivots file"),
         ]:
             if not f.is_file():
-                raise FileNotFoundError(f"Missing required DiskANN artifact: {desc} at {f}")
+                raise FileNotFoundError(
+                    f"Missing required DiskANN artifact: {desc} at '{f}'. "
+                    f"Prefix resolved to: '{self.index_prefix}'. "
+                    f"Please verify DISKANN_INDEX_PREFIX or ensure Phase 5 index is built."
+                )
 
         # Load ID mapping
         if not self.id_map_path.is_file():
@@ -200,22 +366,50 @@ class ColdDiskANNIndex:
             wsl_out = self._to_wsl_path(temp_output_file)
             wsl_id_map = self._to_wsl_path(self.id_map_path)
 
-            cmd = [
-                "wsl",
-                DISKANN_QUERY_BIN_WSL,
-                "--index-prefix", wsl_index_prefix,
-                "--queries", wsl_queries,
-                "-k", str(k),
-                "-l", str(l_search),
-                "--beam-width", str(beam_width),
-                "--num-threads", str(self.num_threads),
-                "--cache-nodes", str(self.cache_nodes),
-                "--id-map", wsl_id_map,
-                "--output", wsl_out,
-            ]
+            if self.is_windows_native:
+                cmd = [
+                    self.query_bin,
+                    "--index-prefix", str(self.index_prefix),
+                    "--queries", str(temp_queries_file),
+                    "-k", str(k),
+                    "-l", str(l_search),
+                    "--beam-width", str(beam_width),
+                    "--num-threads", str(self.num_threads),
+                    "--cache-nodes", str(self.cache_nodes),
+                    "--id-map", str(self.id_map_path),
+                    "--output", str(temp_output_file),
+                ]
+            else:
+                wsl_index_prefix = self._to_wsl_path(self.index_prefix)
+                wsl_queries = self._to_wsl_path(temp_queries_file)
+                wsl_out = self._to_wsl_path(temp_output_file)
+                wsl_id_map = self._to_wsl_path(self.id_map_path)
+
+                search_args = [
+                    "--index-prefix", wsl_index_prefix,
+                    "--queries", wsl_queries,
+                    "-k", str(k),
+                    "-l", str(l_search),
+                    "--beam-width", str(beam_width),
+                    "--num-threads", str(self.num_threads),
+                    "--cache-nodes", str(self.cache_nodes),
+                    "--id-map", wsl_id_map,
+                    "--output", wsl_out,
+                ]
+                cmd = format_wsl_command(self.query_bin, search_args)
+
+            self.last_command = list(cmd)
 
             t0 = time.perf_counter()
-            proc = subprocess.run(cmd, capture_output=True, text=True, check=False)
+            proc = subprocess.run(
+                cmd,
+                cwd=str(workspace_root),
+                capture_output=True,
+                text=True,
+                check=False
+            )
+            self.last_elapsed_wall_ms = (time.perf_counter() - t0) * 1000.0
+
             if proc.returncode != 0:
                 raise RuntimeError(
                     f"DiskANN query search failed (code {proc.returncode}):\nStdout: {proc.stdout}\nStderr: {proc.stderr}"
@@ -337,18 +531,51 @@ class ColdDiskANNIndex:
 
 
 if __name__ == "__main__":
-    # Smoke test of Python adapter
-    index_path = workspace_root / "results/phase5_diskann/index/cold_disk_index_tuned"
-    print(f"[Adapter Test] Initializing ColdDiskANNIndex from {index_path}...")
-    idx = ColdDiskANNIndex(index_path)
-    
-    # Load test queries
-    queries = load_fvecs(workspace_root / "data/query_vectors.fvecs")[:5]
-    print(f"[Adapter Test] Executing test search for 5 queries with k=10, L=100...")
-    res = idx.search(queries, k=10, l_search=100)
-    print(f"[Adapter Test] Returned {res.num_queries} queries in {res.total_elapsed_ms:.2f}ms (QPS: {res.qps:.1f})")
-    print(f"[Adapter Test] Query 0 global IDs: {res.global_ids[0].tolist()}")
-    print(f"[Adapter Test] Query 0 distances: {res.distances[0].tolist()}")
-    
+    print("=" * 78)
+    print("PHASE 5: DISKANN3 ADAPTER SMOKE TEST & LATENCY BASELINE (ITEM 0)")
+    print("=" * 78)
+
+    print(f"[Config] Resolved Executable: {get_diskann_query_bin()}")
+    print(f"[Config] Resolved Index Prefix: {resolve_diskann_index_prefix()}")
+
+    # Initialize adapter
+    idx = ColdDiskANNIndex()
+    print("[Config] ColdDiskANNIndex initialized successfully.")
+
+    # Load 10 test queries
+    queries_path = workspace_root / "data/query_vectors.fvecs"
+    queries = load_fvecs(queries_path)[:10]
+    print(f"[Search] Executing 10-query search with k=10, L=100, beam_width=4...")
+
+    t0_wall = time.perf_counter()
+    res = idx.search(queries, k=10, l_search=100, beam_width=4)
+    t_wall_ms = (time.perf_counter() - t0_wall) * 1000.0
+
+    print(f"[Result] Output shapes: local_ids={res.local_ids.shape}, global_ids={res.global_ids.shape}, distances={res.distances.shape}")
+    print(f"[Result] Internal engine search time: {res.total_elapsed_ms:.3f} ms (QPS: {res.qps:.1f})")
+    print(f"[Result] End-to-end Python wall-clock time: {t_wall_ms:.3f} ms (includes process startup & WSL overhead)")
+    print(f"[Command] Executed command:\n  {' '.join(idx.last_command)}")
+
+    # Check sanitation
+    cmd_str = " ".join(idx.last_command)
+    has_personal_home = "/home/shivamgupta" in cmd_str
+    has_personal_win = "shivam.gupta" in cmd_str
+    print(f"[Sanitation] Contains '/home/shivamgupta': {has_personal_home}")
+    print(f"[Sanitation] Contains 'shivam.gupta': {has_personal_win}")
+    assert not has_personal_home, "Sanitation violation: command contains /home/shivamgupta"
+    assert not has_personal_win, "Sanitation violation: command contains shivam.gupta"
+
+    # Validate output
+    assert res.num_queries == 10
+    assert res.global_ids.shape == (10, 10)
+    assert res.distances.shape == (10, 10)
+    assert np.all(np.isfinite(res.distances))
+    for q_idx in range(10):
+        assert len(set(res.global_ids[q_idx])) == 10, f"Query {q_idx} has duplicate IDs!"
+
     valid, v_cnt, t_cnt = idx.validate_cold_membership(res.global_ids)
-    print(f"[Adapter Test] COLD membership validation: {v_cnt}/{t_cnt} valid ({valid})")
+    print(f"[Validation] COLD membership: {v_cnt}/{t_cnt} valid ({valid})")
+    assert valid, "COLD membership validation failed!"
+    print("=" * 78)
+    print("ITEM 0 SMOKE TEST PASSED.")
+    print("=" * 78)

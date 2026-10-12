@@ -89,7 +89,7 @@ The POC was evaluated and benchmarked under the following hardware and software 
 #### Step 1: Clone or Extract Repository
 Ensure you are in the repository root directory:
 ```powershell
-cd C:\Users\shivam.gupta\Desktop\Case04_Vector_POC
+cd <path-to-repo>\Case04_Vector_POC
 ```
 
 #### Step 2: Initialize Python Virtual Environment
@@ -107,43 +107,110 @@ python -m venv .venv
 .\.venv\Scripts\pip.exe install -r requirements.txt
 ```
 
+#### Step 4: DiskANN Query Engine Binary Setup (WSL2 / Linux)
+The COLD tier utilizes the official Microsoft DiskANN query binary running under Linux/WSL2.
+
+1. In your WSL2 Linux terminal, clone and build the DiskANN query binary:
+```bash
+# In WSL2 terminal (e.g., Ubuntu 22.04 / 24.04 / 26.04)
+git clone https://github.com/microsoft/DiskANN.git ~/diskann-work/DiskANN
+cd ~/diskann-work/DiskANN
+cargo build --release --bin diskann_query
+```
+2. Verify the binary exists and is executable:
+```bash
+test -x ~/diskann-work/DiskANN/target/release/diskann_query && echo "DiskANN binary ready"
+```
+
+#### Step 5: Configure Environment Variables
+Configure the path to the DiskANN binary and optional index prefix:
+
+```powershell
+# In PowerShell:
+# (Optional) Set custom DiskANN query binary path. Defaults to ~/diskann-work/DiskANN/target/release/diskann_query
+$env:DISKANN_QUERY_BIN = "~/diskann-work/DiskANN/target/release/diskann_query"
+
+# (Optional) Set custom index prefix. Defaults to results/phase5_diskann/index/cold_disk_index_tuned
+$env:DISKANN_INDEX_PREFIX = "results/phase5_diskann/index/cold_disk_index_tuned"
+```
+
+##### Deterministic Precedence Order:
+- **DiskANN Query Binary Resolution (`query_bin`)**:
+  1. Explicit constructor argument passed to `ColdDiskANNIndex(query_bin=...)`
+  2. Environment variable `$env:DISKANN_QUERY_BIN`
+  3. Legacy environment variable alias `$env:DISKANN_QUERY_BIN_WSL`
+  4. Default portable fallback: `~/diskann-work/DiskANN/target/release/diskann_query` (with automatic bash `~` expansion)
+- **DiskANN Index Prefix Resolution (`index_prefix`)**:
+  1. Explicit constructor argument passed to `ColdDiskANNIndex(index_prefix=...)`
+  2. Environment variable `$env:DISKANN_INDEX_PREFIX`
+  3. Default project-relative fallback: `results/phase5_diskann/index/cold_disk_index_tuned`
+
+#### Step 6: Artifact Accounting & Availability
+All data and index artifacts required for evaluation are **Git-tracked in the repository**:
+- Base vectors: `data/base_vectors.fvecs` (51.2 MB, 100k vectors, $D=128$, float32)
+- Query vectors: `data/query_vectors.fvecs` (1k vectors)
+- Ground truth: `data/ground_truth.ivecs`
+- SSD Raw store: `storage/ssd_vectors/vectors.bin` (48.83 MiB)
+- Pre-built DiskANN index: `results/phase5_diskann/index/cold_disk_index_tuned_*` (`_disk.index`, `_pq_compressed.bin`, `_pq_pivots.bin`)
+- ID mapping & COLD manifest: `results/phase5_diskann/cold_id_map.json`, `cold_manifest.json`
+
+**No dataset generation or index rebuilding is required** on clean checkout.  
+*Validation Scope*: Handover readiness has been verified in the local workspace with complete Git tracking audits. A fresh-clone test on a clean external machine was not physically performed.
+
 ---
 
 ### 5. Exact Reproduction Commands
 
-The repository provides a unified orchestrator CLI (`run_poc.py`):
-
-#### 1. Cryptographic Checksum Verification (34 Frozen Files)
-Verifies that all frozen datasets, source modules, and regression test suites match their authoritative SHA-256 digests bit-for-bit:
+#### 1. Item 0: 10-Query DiskANN Smoke Test (Mentor Acceptance Gate)
+Executes a 10-query search ($k=10, L_{\text{search}}=100, \text{beam}=4$) via DiskANN:
 ```powershell
-.\.venv\Scripts\python.exe run_poc.py --checksum
+.\.venv\Scripts\python.exe src/phase5_diskann_search.py
 ```
-*Expected Output*: `[PASS] All 34 frozen source, test, and dataset files bitwise match 100.0%.` (Exit code: `0`)
+*Expected Output*:
+- Returns `(10, 10)` result shapes, finite distances, and 100% valid COLD IDs.
+- Validates zero personal path leakage (`shivam` is not present in executed commands).
+- Typical latency: ~56 ms engine time (~178.5 QPS), ~458 ms wall-clock time.
 
-#### 2. Multi-Phase Regression Test Suite (100 Tests)
-Executes all unit and integration tests across Phases 3 through 9:
+#### 2. Live Hybrid Search Demo (Single-Query End-to-End)
+Executes a live single query through the complete hybrid vector retrieval pipeline:
 ```powershell
-.\.venv\Scripts\python.exe run_poc.py --test
+.\.venv\Scripts\python.exe demo_hybrid_search.py
 ```
-*Expected Output*: `Ran 100 tests in ~21s ... OK` (Exit code: `0`, 0 failures, 0 errors, 0 skips).
+*Expected Output*:
+- Retrieves Top-10 candidates across HOT FAISS HNSW and COLD DiskANN.
+- Reranks using exact unbuffered NVMe reads.
+- Displays Top-10 global IDs, distances, and component latency breakdown.
 
-#### 3. Standard Test Runner (unittest discovery)
+#### 3. Phase 5 Unit Test Suite (16 Tests)
+Validates DiskANN index search, parameter parsing, error handling, and recall:
+```powershell
+.\.venv\Scripts\python.exe -m unittest tests.test_phase5 -v
+```
+*Expected Output*: `Ran 16 tests in ~8s ... OK`
+
+#### 4. Multi-Phase Regression Test Suite (Phases 3–5)
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover tests -v
 ```
+*Integrity Note*: Tests in Phases 6–9 verify historical checksum manifests that were frozen prior to Item 0 portability modifications to `src/phase5_diskann_search.py` and `src/phase5_orchestrator.py`. All functional and behavioral tests across all phases pass.
 
-#### 4. Phase 10 Multi-Trial Benchmark Execution
-Executes 5 independent warm trials across all 9 engine configurations with automated statistical aggregation:
+#### 5. Phase 10 Multi-Trial Benchmark Execution
+Executes 5 independent warm trials across all 9 engine configurations:
 ```powershell
 .\.venv\Scripts\python.exe run_poc.py --bench
 ```
 *Output Artifacts*: Saved to `results/phase10/trials/trial_details.json` and `results/phase10/metrics/phase10_benchmarks.json`.
 
-#### 5. Full End-to-End POC Pipeline
-Executes checksum verification, the 100-test regression suite, and the 5-trial benchmark suite sequentially:
-```powershell
-.\.venv\Scripts\python.exe run_poc.py --all
-```
+---
+
+### 5.1 Common Troubleshooting & Recovery
+
+| Failure / Symptom | Root Cause | Resolution |
+| :--- | :--- | :--- |
+| `FileNotFoundError: DiskANN executable not found` | `diskann_query` binary not built or path incorrect | Build binary in WSL (`cargo build --release --bin diskann_query`) or set `$env:DISKANN_QUERY_BIN = "<path>"` |
+| `WSL execution failed / wsl not found` | WSL2 not installed or Linux distribution not registered | Install WSL2 Ubuntu via `wsl --install -d Ubuntu` |
+| `FileNotFoundError: Required DiskANN index files missing` | Index prefix incorrect or files missing | Ensure `DISKANN_INDEX_PREFIX` points to prefix containing `_disk.index`, `_pq_compressed.bin`, `_pq_pivots.bin` |
+| `Permission denied in WSL` | Binary missing execute permissions | In WSL: `chmod +x <path-to-diskann_query>` |
 
 ---
 

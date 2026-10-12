@@ -33,10 +33,18 @@ except ImportError as err:
 
 from src.phase1_2_evaluation import load_fvecs, load_ivecs, compute_sha256
 from src.phase5_prepare_cold import prepare_all
-from src.phase5_diskann_search import ColdDiskANNIndex
+from src.phase5_diskann_search import ColdDiskANNIndex, resolve_diskann_index_prefix
 
 
-DISKANN_REPO_WSL = "/home/shivamgupta/diskann-work/DiskANN"
+DISKANN_REPO_WSL = os.environ.get(
+    "DISKANN_REPO_WSL",
+    os.environ.get("DISKANN_REPO_PATH_WSL", "~/diskann-work/DiskANN")
+).rstrip("/")
+if DISKANN_REPO_WSL.startswith("/home/"):
+    parts = DISKANN_REPO_WSL.split("/", 3)
+    if len(parts) >= 4:
+        DISKANN_REPO_WSL = f"~/{parts[3]}"
+
 GIT_COMMIT = "907d4054"
 RUST_TOOLCHAIN = "rustc 1.97.1 (8bab26f4f 2026-07-14)"
 CARGO_TOOLCHAIN = "cargo 1.97.1 (c980f4866 2026-06-30)"
@@ -63,7 +71,13 @@ def run_official_benchmark(config_path: Path, output_path: Path) -> Dict[str, An
     )
 
     t0 = time.perf_counter()
-    proc = subprocess.run(["wsl", "bash", "-c", cmd], capture_output=True, text=True, check=False)
+    proc = subprocess.run(
+        ["wsl", "bash", "-c", cmd],
+        cwd=str(workspace_root),
+        capture_output=True,
+        text=True,
+        check=False
+    )
     elapsed = time.perf_counter() - t0
 
     if proc.returncode != 0:
@@ -134,6 +148,11 @@ def generate_validation_report(
     sweep = metrics["parameter_sweep"]
     build = metrics["build_stats"]
     persist = metrics["persistence_test"]
+
+    tuned_cfg_wsl = to_wsl_path(workspace_root / "results/phase5_diskann/metadata/disk_index_tuned_config.json")
+    tuned_out_wsl = to_wsl_path(workspace_root / "results/phase5_diskann/metrics/benchmark_tuned_output.json")
+    load_cfg_wsl = to_wsl_path(workspace_root / "results/phase5_diskann/metadata/disk_index_load_config.json")
+    load_out_wsl = to_wsl_path(workspace_root / "results/phase5_diskann/metrics/benchmark_load_output.json")
 
     report_content = f"""# PHASE 5 VALIDATION REPORT
 ## Microsoft DiskANN3 SSD-Backed COLD Index Integration
@@ -324,23 +343,23 @@ To independently reproduce all Phase 5 artifacts and benchmark results from scra
 .\\.venv\\Scripts\\python.exe src/phase5_prepare_cold.py
 
 # 2. Validate configuration schema with dry-run
-wsl bash -c "cd /home/shivamgupta/diskann-work/DiskANN && source ~/.cargo/env && \\
+wsl bash -c "cd {DISKANN_REPO_WSL} && source ~/.cargo/env && \\
   cargo run --release --package diskann-benchmark --features disk-index -- run \\
-  --input-file /mnt/c/Users/shivam.gupta/Desktop/Case04_Vector_POC/results/phase5_diskann/metadata/disk_index_tuned_config.json \\
-  --output-file /mnt/c/Users/shivam.gupta/Desktop/Case04_Vector_POC/results/phase5_diskann/metrics/benchmark_tuned_output.json \\
+  --input-file {tuned_cfg_wsl} \\
+  --output-file {tuned_out_wsl} \\
   --dry-run"
 
 # 3. Build official DiskANN3 disk index and run benchmark
-wsl bash -c "cd /home/shivamgupta/diskann-work/DiskANN && source ~/.cargo/env && \\
+wsl bash -c "cd {DISKANN_REPO_WSL} && source ~/.cargo/env && \\
   cargo run --release --package diskann-benchmark --features disk-index -- run \\
-  --input-file /mnt/c/Users/shivam.gupta/Desktop/Case04_Vector_POC/results/phase5_diskann/metadata/disk_index_tuned_config.json \\
-  --output-file /mnt/c/Users/shivam.gupta/Desktop/Case04_Vector_POC/results/phase5_diskann/metrics/benchmark_tuned_output.json"
+  --input-file {tuned_cfg_wsl} \\
+  --output-file {tuned_out_wsl}"
 
 # 4. Verify index persistence and reload
-wsl bash -c "cd /home/shivamgupta/diskann-work/DiskANN && source ~/.cargo/env && \\
+wsl bash -c "cd {DISKANN_REPO_WSL} && source ~/.cargo/env && \\
   cargo run --release --package diskann-benchmark --features disk-index -- run \\
-  --input-file /mnt/c/Users/shivam.gupta/Desktop/Case04_Vector_POC/results/phase5_diskann/metadata/disk_index_load_config.json \\
-  --output-file /mnt/c/Users/shivam.gupta/Desktop/Case04_Vector_POC/results/phase5_diskann/metrics/benchmark_load_output.json"
+  --input-file {load_cfg_wsl} \\
+  --output-file {load_out_wsl}"
 
 # 5. Run full test suite
 .\\.venv\\Scripts\\python.exe -m unittest discover tests/
@@ -403,7 +422,7 @@ def main():
     build_time_sec = bench_data["build"]["build_time"] / 1_000_000.0
 
     # 4. Measure index artifact file sizes
-    idx_prefix = index_dir / "cold_disk_index_tuned"
+    idx_prefix = resolve_diskann_index_prefix(index_dir / "cold_disk_index_tuned")
     disk_index_file = Path(str(idx_prefix) + "_disk.index")
     pq_comp_file = Path(str(idx_prefix) + "_pq_compressed.bin")
     pq_pivots_file = Path(str(idx_prefix) + "_pq_pivots.bin")
