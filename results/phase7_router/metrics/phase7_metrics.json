@@ -1,0 +1,400 @@
+{
+  "timestamp": "2026-10-11T06:30:14.684487+00:00",
+  "status": "PASS",
+  "phase": 7,
+  "dataset": {
+    "total_vectors": 100000,
+    "dimension": 128,
+    "num_queries": 1000,
+    "hot_vector_count": 18000,
+    "cold_vector_count": 82000,
+    "hot_id_range": [
+      0,
+      17999
+    ],
+    "cold_id_range": [
+      18000,
+      99999
+    ]
+  },
+  "memory_footprint": {
+    "hot_hnsw_serialized_mb": 13.46,
+    "hot_dram_vectors_mb": 8.79,
+    "cold_diskann_dram_pq_mb": 2.63,
+    "phase4_pq_dram_mb": 1.66,
+    "total_dram_footprint_mb": 26.54,
+    "dram_savings_vs_full_hnsw_pct": 64.5,
+    "cold_diskann_nvme_index_mb": 64.07,
+    "cold_nvme_raw_vectors_mb": 40.04,
+    "total_logical_cold_nvme_mb": 104.11,
+    "total_physical_nvme_files_mb": 115.53
+  },
+  "policies_evaluated": [
+    {
+      "policy": "ALL_TIERS",
+      "policy_name": "ALL_TIERS (Balanced High Baseline)",
+      "parameters": {
+        "threshold": 145.0,
+        "k": 10,
+        "k_hot": 50,
+        "k_cold": 50,
+        "ef_search_hot": 64,
+        "l_search_cold": 100,
+        "beam_width_cold": 4
+      },
+      "num_queries": 1000,
+      "k": 10,
+      "recall_metrics": {
+        "recall_at_1": 0.827,
+        "recall_at_5": 0.7726000000000001,
+        "recall_at_10": 0.7397
+      },
+      "latency_percentiles": {
+        "mean_ms": 44.163911399157584,
+        "p50_ms": 43.6229593232479,
+        "p90_ms": 49.8275292851083,
+        "p95_ms": 53.089984262250724,
+        "p99_ms": 63.59187928456605,
+        "min_ms": 29.649759332146495,
+        "max_ms": 71.48325933866202
+      },
+      "throughput": {
+        "qps": 132.5,
+        "total_wall_clock_ms": 7547.36
+      },
+      "routing_metrics": {
+        "hot_requests": 1000,
+        "cold_requests": 1000,
+        "early_exit_count": 0,
+        "early_exit_rate_pct": 0.0
+      },
+      "candidate_stats": {
+        "mean_raw_candidates": 100.0,
+        "mean_dedup_candidates": 100.0,
+        "dedup_reduction_pct": 0.0
+      },
+      "tier_distribution": {
+        "hot_pct": 21.49,
+        "cold_pct": 78.51
+      },
+      "io_stats": {
+        "dram_reads": 50000,
+        "ssd_reads": 50000,
+        "ssd_bytes_read": 25600000,
+        "ssd_read_mb": 24.4141
+      },
+      "prediction_validation": {
+        "is_valid": true,
+        "has_negative_ids": false,
+        "has_out_of_bounds_ids": false,
+        "duplicate_rows": 0,
+        "monotonic_violations": 0
+      }
+    },
+    {
+      "policy": "HOT_ONLY",
+      "policy_name": "HOT_ONLY (DRAM In-Memory Search)",
+      "parameters": {
+        "threshold": 145.0,
+        "k": 10,
+        "k_hot": 50,
+        "k_cold": 50,
+        "ef_search_hot": 64,
+        "l_search_cold": 100,
+        "beam_width_cold": 4
+      },
+      "num_queries": 1000,
+      "k": 10,
+      "recall_metrics": {
+        "recall_at_1": 0.178,
+        "recall_at_5": 0.15960000000000002,
+        "recall_at_10": 0.1554
+      },
+      "latency_percentiles": {
+        "mean_ms": 0.12032909976551309,
+        "p50_ms": 0.11243857868248597,
+        "p90_ms": 0.12804858112940565,
+        "p95_ms": 0.14235863188514483,
+        "p99_ms": 0.21244458231376465,
+        "min_ms": 0.1084386064321734,
+        "max_ms": 0.9712385987513699
+      },
+      "throughput": {
+        "qps": 8074.29,
+        "total_wall_clock_ms": 123.85
+      },
+      "routing_metrics": {
+        "hot_requests": 1000,
+        "cold_requests": 0,
+        "early_exit_count": 0,
+        "early_exit_rate_pct": 0.0
+      },
+      "candidate_stats": {
+        "mean_raw_candidates": 50.0,
+        "mean_dedup_candidates": 50.0,
+        "dedup_reduction_pct": 0.0
+      },
+      "tier_distribution": {
+        "hot_pct": 100.0,
+        "cold_pct": 0.0
+      },
+      "io_stats": {
+        "dram_reads": 50000,
+        "ssd_reads": 0,
+        "ssd_bytes_read": 0,
+        "ssd_read_mb": 0.0
+      },
+      "prediction_validation": {
+        "is_valid": true,
+        "has_negative_ids": false,
+        "has_out_of_bounds_ids": false,
+        "duplicate_rows": 0,
+        "monotonic_violations": 0
+      }
+    },
+    {
+      "policy": "COLD_ONLY",
+      "policy_name": "COLD_ONLY (NVMe SSD DiskANN Search)",
+      "parameters": {
+        "threshold": 145.0,
+        "k": 10,
+        "k_hot": 50,
+        "k_cold": 50,
+        "ef_search_hot": 64,
+        "l_search_cold": 100,
+        "beam_width_cold": 4
+      },
+      "num_queries": 1000,
+      "k": 10,
+      "recall_metrics": {
+        "recall_at_1": 0.649,
+        "recall_at_5": 0.613,
+        "recall_at_10": 0.5842999999999999
+      },
+      "latency_percentiles": {
+        "mean_ms": 46.279668599356576,
+        "p50_ms": 44.26500000267475,
+        "p90_ms": 53.93105997147225,
+        "p95_ms": 59.441419988357644,
+        "p99_ms": 74.50772700201418,
+        "min_ms": 34.0902000082396,
+        "max_ms": 160.75750003442914
+      },
+      "throughput": {
+        "qps": 129.54,
+        "total_wall_clock_ms": 7719.69
+      },
+      "routing_metrics": {
+        "hot_requests": 0,
+        "cold_requests": 1000,
+        "early_exit_count": 0,
+        "early_exit_rate_pct": 0.0
+      },
+      "candidate_stats": {
+        "mean_raw_candidates": 50.0,
+        "mean_dedup_candidates": 50.0,
+        "dedup_reduction_pct": 0.0
+      },
+      "tier_distribution": {
+        "hot_pct": 0.0,
+        "cold_pct": 100.0
+      },
+      "io_stats": {
+        "dram_reads": 0,
+        "ssd_reads": 50000,
+        "ssd_bytes_read": 25600000,
+        "ssd_read_mb": 24.4141
+      },
+      "prediction_validation": {
+        "is_valid": true,
+        "has_negative_ids": false,
+        "has_out_of_bounds_ids": false,
+        "duplicate_rows": 0,
+        "monotonic_violations": 0
+      }
+    },
+    {
+      "policy": "ADAPTIVE_THRESHOLD",
+      "policy_name": "ADAPTIVE_THRESHOLD (tau=135.0 - High Recall)",
+      "parameters": {
+        "threshold": 135.0,
+        "k": 10,
+        "k_hot": 50,
+        "k_cold": 50,
+        "ef_search_hot": 64,
+        "l_search_cold": 100,
+        "beam_width_cold": 4
+      },
+      "num_queries": 1000,
+      "k": 10,
+      "recall_metrics": {
+        "recall_at_1": 0.82,
+        "recall_at_5": 0.7572000000000001,
+        "recall_at_10": 0.7242
+      },
+      "latency_percentiles": {
+        "mean_ms": 43.59519099869396,
+        "p50_ms": 43.37918741430342,
+        "p90_ms": 52.46522739521713,
+        "p95_ms": 56.65476241984589,
+        "p99_ms": 67.46881440762002,
+        "min_ms": 0.09588738391175866,
+        "max_ms": 77.21138741095737
+      },
+      "throughput": {
+        "qps": 140.53,
+        "total_wall_clock_ms": 7115.68
+      },
+      "routing_metrics": {
+        "hot_requests": 1000,
+        "cold_requests": 975,
+        "early_exit_count": 25,
+        "early_exit_rate_pct": 2.5
+      },
+      "candidate_stats": {
+        "mean_raw_candidates": 98.75,
+        "mean_dedup_candidates": 98.75,
+        "dedup_reduction_pct": 0.0
+      },
+      "tier_distribution": {
+        "hot_pct": 23.42,
+        "cold_pct": 76.58
+      },
+      "io_stats": {
+        "dram_reads": 50000,
+        "ssd_reads": 48750,
+        "ssd_bytes_read": 24960000,
+        "ssd_read_mb": 23.8037
+      },
+      "prediction_validation": {
+        "is_valid": true,
+        "has_negative_ids": false,
+        "has_out_of_bounds_ids": false,
+        "duplicate_rows": 0,
+        "monotonic_violations": 0
+      }
+    },
+    {
+      "policy": "ADAPTIVE_THRESHOLD",
+      "policy_name": "ADAPTIVE_THRESHOLD (tau=145.0 - Balanced)",
+      "parameters": {
+        "threshold": 145.0,
+        "k": 10,
+        "k_hot": 50,
+        "k_cold": 50,
+        "ef_search_hot": 64,
+        "l_search_cold": 100,
+        "beam_width_cold": 4
+      },
+      "num_queries": 1000,
+      "k": 10,
+      "recall_metrics": {
+        "recall_at_1": 0.753,
+        "recall_at_5": 0.6832,
+        "recall_at_10": 0.6479
+      },
+      "latency_percentiles": {
+        "mean_ms": 38.25893399997106,
+        "p50_ms": 43.2810018035667,
+        "p90_ms": 51.25904179641549,
+        "p95_ms": 54.319366814997785,
+        "p99_ms": 66.18294083765248,
+        "min_ms": 0.10320177476387471,
+        "max_ms": 88.4014018420009
+      },
+      "throughput": {
+        "qps": 149.28,
+        "total_wall_clock_ms": 6698.65
+      },
+      "routing_metrics": {
+        "hot_requests": 1000,
+        "cold_requests": 841,
+        "early_exit_count": 159,
+        "early_exit_rate_pct": 15.9
+      },
+      "candidate_stats": {
+        "mean_raw_candidates": 92.05,
+        "mean_dedup_candidates": 92.05,
+        "dedup_reduction_pct": 0.0
+      },
+      "tier_distribution": {
+        "hot_pct": 33.41,
+        "cold_pct": 66.59
+      },
+      "io_stats": {
+        "dram_reads": 50000,
+        "ssd_reads": 42050,
+        "ssd_bytes_read": 21529600,
+        "ssd_read_mb": 20.5322
+      },
+      "prediction_validation": {
+        "is_valid": true,
+        "has_negative_ids": false,
+        "has_out_of_bounds_ids": false,
+        "duplicate_rows": 0,
+        "monotonic_violations": 0
+      }
+    },
+    {
+      "policy": "ADAPTIVE_THRESHOLD",
+      "policy_name": "ADAPTIVE_THRESHOLD (tau=155.0 - Max I/O Savings)",
+      "parameters": {
+        "threshold": 155.0,
+        "k": 10,
+        "k_hot": 50,
+        "k_cold": 50,
+        "ef_search_hot": 64,
+        "l_search_cold": 100,
+        "beam_width_cold": 4
+      },
+      "num_queries": 1000,
+      "k": 10,
+      "recall_metrics": {
+        "recall_at_1": 0.589,
+        "recall_at_5": 0.5206000000000001,
+        "recall_at_10": 0.49319999999999997
+      },
+      "latency_percentiles": {
+        "mean_ms": 25.924199699066087,
+        "p50_ms": 40.0248479068866,
+        "p90_ms": 49.533337889046784,
+        "p95_ms": 52.63243289091606,
+        "p99_ms": 58.73887086408455,
+        "min_ms": 0.09099791396874934,
+        "max_ms": 66.06519795286376
+      },
+      "throughput": {
+        "qps": 211.12,
+        "total_wall_clock_ms": 4736.61
+      },
+      "routing_metrics": {
+        "hot_requests": 1000,
+        "cold_requests": 571,
+        "early_exit_count": 429,
+        "early_exit_rate_pct": 42.9
+      },
+      "candidate_stats": {
+        "mean_raw_candidates": 78.55,
+        "mean_dedup_candidates": 78.55,
+        "dedup_reduction_pct": 0.0
+      },
+      "tier_distribution": {
+        "hot_pct": 53.99,
+        "cold_pct": 46.01
+      },
+      "io_stats": {
+        "dram_reads": 50000,
+        "ssd_reads": 28550,
+        "ssd_bytes_read": 14617600,
+        "ssd_read_mb": 13.9404
+      },
+      "prediction_validation": {
+        "is_valid": true,
+        "has_negative_ids": false,
+        "has_out_of_bounds_ids": false,
+        "duplicate_rows": 0,
+        "monotonic_violations": 0
+      }
+    }
+  ]
+}

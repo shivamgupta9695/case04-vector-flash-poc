@@ -1,0 +1,59 @@
+{
+  "phase": "1.2",
+  "dataset": {
+    "base_vectors": 100000,
+    "queries": 1000,
+    "dimension": 128
+  },
+  "k": 10,
+  "search_algorithm": "FAISS IndexFlatL2",
+  "recall_at_k": 1.0,
+  "recall_generalized": {
+    "recall_at_1": 1.0,
+    "recall_at_5": 1.0,
+    "recall_at_10": 1.0
+  },
+  "search_time_seconds": 0.20997,
+  "average_latency_ms": 0.21,
+  "qps": 4762.48,
+  "repetitions": 5,
+  "batch_timing_runs": [
+    0.2111,
+    0.20879,
+    0.21407,
+    0.20667,
+    0.20924
+  ],
+  "timing_statistics": {
+    "min_time_seconds": 0.20667,
+    "mean_time_seconds": 0.20997,
+    "max_time_seconds": 0.21407
+  },
+  "individual_query_latency_percentiles": {
+    "sample_size": 200,
+    "p50_ms": 4.9493,
+    "p95_ms": 5.348,
+    "p99_ms": 5.722
+  },
+  "checksum_verification": {
+    "base_vectors.fvecs": "PASS",
+    "query_vectors.fvecs": "PASS",
+    "ground_truth.ivecs": "PASS",
+    "ground_truth_distances.fvecs": "PASS"
+  },
+  "correctness_tests": {
+    "TEST 2 (Synthetic Perfect Match)": "PASS",
+    "TEST 3 (Synthetic Zero Overlap)": "PASS",
+    "TEST 4 (Partial 50% Overlap)": "PASS",
+    "TEST 5 (Duplicate ID Deduplication)": "PASS",
+    "TEST 5b (Duplicate Detection Flag)": "PASS",
+    "TEST 1 (IndexFlatL2 vs Ground Truth Recall@10 == 1.0)": "PASS"
+  },
+  "validation": {
+    "ground_truth_loaded": "PASS",
+    "shape_validation": "PASS",
+    "id_validation": "PASS",
+    "recall_validation": "PASS",
+    "overall_status": "PASS"
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "timestamp": "2026-10-11T10:00:00.000000+00:00",
+  "status": "PASS",
+  "phase": 9,
+  "milvus_version_info": {
+    "pymilvus_version": "3.0.2",
+    "milvus_lite_version": "3.2.1",
+    "integration_model": "MilvusHybridAdapter (Client-Facing Gateway)",
+    "native_server_daemon": "Embedded Milvus-Lite engine"
+  },
+  "dataset": {
+    "total_vectors": 100000,
+    "dimension": 128,
+    "num_queries": 1000,
+    "hot_vector_count": 18000,
+    "cold_vector_count": 82000
+  },
+  "test_suite_reconciliation": {
+    "total_passing_tests": 100,
+    "total_test_files": 7,
+    "per_file_counts": {
+      "tests/test_phase3.py": 15,
+      "tests/test_phase4.py": 23,
+      "tests/test_phase5.py": 16,
+      "tests/test_phase6.py": 13,
+      "tests/test_phase7.py": 11,
+      "tests/test_phase8.py": 11,
+      "tests/test_phase9.py": 11
+    },
+    "reconciliation_sum": 100,
+    "execution_time_seconds": 19.16
+  },
+  "storage_and_memory_reconciliation": {
+    "dram_residency_mb": {
+      "hot_hnsw_serialized_mb": 13.46,
+      "hot_dram_vectors_mb": 8.79,
+      "cold_diskann_dram_pq_mb": 2.63,
+      "phase4_pq_dram_mb": 1.66,
+      "total_hybrid_dram_footprint_mb": 26.54
+    },
+    "native_milvus_dram_mb": {
+      "theoretical_minimal_estimate_mb": 76.5,
+      "measured_working_set_delta_mb": 245.43,
+      "hybrid_savings_vs_theoretical_pct": 65.3,
+      "hybrid_savings_vs_measured_pct": 89.2
+    },
+    "physical_nvme_files_on_disk": {
+      "cold_disk_index_tuned_disk_index_bytes": 67178496,
+      "cold_disk_index_tuned_disk_index_mb": 64.07,
+      "cold_disk_index_tuned_pq_compressed_bin_bytes": 2624008,
+      "cold_disk_index_tuned_pq_compressed_bin_mb": 2.5,
+      "cold_disk_index_tuned_pq_pivots_bin_bytes": 135836,
+      "cold_disk_index_tuned_pq_pivots_bin_mb": 0.13,
+      "physical_vectors_bin_total_bytes": 51200000,
+      "physical_vectors_bin_total_mb": 48.83,
+      "total_physical_nvme_files_mb": 115.53
+    },
+    "logical_cold_allocation": {
+      "cold_raw_vectors_logical_slice_mb": 40.04,
+      "cold_diskann_graph_index_mb": 64.07,
+      "total_logical_cold_storage_mb": 104.11
+    }
+  },
+  "benchmarks": {
+    "standalone_hybrid": {
+      "name": "Standalone Phase 6 Hybrid Pipeline",
+      "num_queries": 1000,
+      "batch_size": 1000,
+      "concurrency": "sequential coordinator / multi-threaded index engines (8 threads)",
+      "recall_metrics": {
+        "recall_at_1": 0.827,
+        "recall_at_5": 0.7726,
+        "recall_at_10": 0.7397
+      },
+      "latency_percentiles": {
+        "mean_ms": 33.09,
+        "p50_ms": 32.78,
+        "p90_ms": 36.77,
+        "p95_ms": 38.28,
+        "p99_ms": 41.37
+      },
+      "throughput_qps": 184.94,
+      "total_wall_clock_ms": 5407.31,
+      "ssd_reads": 50000,
+      "ssd_read_mb": 24.414
+    },
+    "milvus_hybrid_adapter": {
+      "name": "Phase 9 Milvus Hybrid Adapter (ALL_TIERS)",
+      "num_queries": 1000,
+      "batch_size": 1000,
+      "concurrency": "sequential coordinator / multi-threaded index engines (8 threads)",
+      "recall_metrics": {
+        "recall_at_1": 0.827,
+        "recall_at_5": 0.7726,
+        "recall_at_10": 0.7397
+      },
+      "latency_percentiles": {
+        "mean_ms": 33.1,
+        "p50_ms": 32.79,
+        "p90_ms": 36.78,
+        "p95_ms": 38.29,
+        "p99_ms": 41.38
+      },
+      "throughput_qps": 156.02,
+      "total_wall_clock_ms": 6409.62,
+      "adapter_overhead_ms": 10.57,
+      "adapter_overhead_per_query_us": 10.57,
+      "bitwise_ids_match_with_standalone": true,
+      "bitwise_dists_match_with_standalone": true,
+      "max_distance_diff": 0.0,
+      "ssd_reads": 50000,
+      "ssd_read_mb": 24.4141
+    },
+    "native_milvus_baseline": {
+      "name": "Native Milvus Baseline (FLAT Index)",
+      "sample_queries": 100,
+      "index_type": "FLAT",
+      "metric_type": "L2",
+      "recall_metrics": {
+        "recall_at_1": 1.0,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0
+      },
+      "mean_latency_ms": 45.35,
+      "throughput_qps": 22.05,
+      "dram_footprint_theoretical_mb": 76.5,
+      "dram_footprint_measured_workingset_mb": 245.43,
+      "dram_reduction_hybrid_vs_theoretical_pct": 65.3,
+      "dram_reduction_hybrid_vs_measured_pct": 89.2
+    }
+  }
+}

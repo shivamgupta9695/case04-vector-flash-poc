@@ -1,0 +1,16 @@
+{
+  "phase": 9,
+  "status": "PASS",
+  "audit_verdict": "PASS",
+  "total_passing_tests": 100,
+  "test_counts_reconciled": true,
+  "bitwise_match": true,
+  "max_distance_diff": 0.0,
+  "recall_at_1": 0.827,
+  "recall_at_5": 0.7726,
+  "recall_at_10": 0.7397,
+  "adapter_overhead_us": 10.57,
+  "throughput_qps": 156.02,
+  "dram_savings_pct": 65.3,
+  "frozen_checksums_match": true
+}

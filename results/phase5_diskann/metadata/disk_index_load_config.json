@@ -1,0 +1,28 @@
+{
+  "search_directories": [
+    "/mnt/c/Users/shivam.gupta/Desktop/Case04_Vector_POC/results/phase5_diskann/prepared"
+  ],
+  "jobs": [
+    {
+      "type": "disk-index",
+      "content": {
+        "source": {
+          "disk-index-source": "Load",
+          "data_type": "float32",
+          "load_path": "/mnt/c/Users/shivam.gupta/Desktop/Case04_Vector_POC/results/phase5_diskann/index/cold_disk_index"
+        },
+        "search_phase": {
+          "queries": "query_vectors.bin",
+          "groundtruth": "cold_groundtruth_local.bin",
+          "search_list": [10, 20, 40, 80],
+          "beam_width": 4,
+          "recall_at": 10,
+          "num_threads": 4,
+          "is_flat_search": false,
+          "distance": "squared_l2",
+          "vector_filters_file": null
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,304 @@
+{
+  "timestamp": "2026-10-11T10:17:50.796304+00:00",
+  "status": "PASS",
+  "phase": 10,
+  "protocol": "5-trial interleaved with 50 warm-up queries",
+  "environment": {
+    "host_cpu": "11th Gen Intel Core i5-1145G7 @ 2.60GHz (4c/8t)",
+    "host_ram_gb": 15.4,
+    "host_storage": "BC711 NVMe SK hynix 512GB SSD",
+    "wsl_distro": "Ubuntu 26.04.1 LTS (Kernel 6.18)",
+    "python_version": "3.12.10",
+    "diskann_commit": "907d4054"
+  },
+  "configurations": {
+    "standalone_hybrid": {
+      "name": "Standalone Hybrid Pipeline",
+      "trials_completed": 5,
+      "num_queries": 1000,
+      "recall": {
+        "recall_at_1": 0.827,
+        "recall_at_5": 0.7726,
+        "recall_at_10": 0.7397
+      },
+      "qps": {
+        "median": 81.43,
+        "mean": 78.9,
+        "std": 8.31,
+        "min": 68.42,
+        "max": 90.43
+      },
+      "latency_percentiles_ms": {
+        "mean": 82.5,
+        "p50": 80.5,
+        "p90": 105.01,
+        "p95": 112.82,
+        "p99": 126.89
+      },
+      "ssd_io": {
+        "median_reads": 50000,
+        "median_mb": 24.4141
+      },
+      "parity_with_standalone": {
+        "bitwise_match_all_trials": true,
+        "max_dist_diff": 0.0
+      }
+    },
+    "milvus_hybrid_adapter": {
+      "name": "Milvus Hybrid Adapter",
+      "trials_completed": 5,
+      "num_queries": 1000,
+      "recall": {
+        "recall_at_1": 0.827,
+        "recall_at_5": 0.7726,
+        "recall_at_10": 0.7397
+      },
+      "qps": {
+        "median": 81.35,
+        "mean": 83.11,
+        "std": 4.37,
+        "min": 78.9,
+        "max": 90.46
+      },
+      "latency_percentiles_ms": {
+        "mean": 82.51,
+        "p50": 80.51,
+        "p90": 105.09,
+        "p95": 112.91,
+        "p99": 126.97
+      },
+      "ssd_io": {
+        "median_reads": 50000,
+        "median_mb": 24.4141
+      },
+      "parity_with_standalone": {
+        "bitwise_match_all_trials": true,
+        "max_dist_diff": 0.0
+      }
+    },
+    "faiss_hnsw_full": {
+      "name": "Full-DRAM FAISS HNSW",
+      "trials_completed": 5,
+      "num_queries": 1000,
+      "recall": {
+        "recall_at_1": 0.654,
+        "recall_at_5": 0.5938,
+        "recall_at_10": 0.5639
+      },
+      "qps": {
+        "median": 4303.67,
+        "mean": 4358.37,
+        "std": 272.38,
+        "min": 4035.31,
+        "max": 4843.99
+      },
+      "latency_percentiles_ms": {
+        "mean": 0.23,
+        "p50": 0.23,
+        "p90": 0.27,
+        "p95": 0.29,
+        "p99": 0.34
+      },
+      "ssd_io": {
+        "median_reads": 0,
+        "median_mb": 0.0
+      },
+      "parity_with_standalone": {
+        "bitwise_match_all_trials": false,
+        "max_dist_diff": -1.0
+      }
+    },
+    "hot_only": {
+      "name": "HOT-Only (FAISS HNSW)",
+      "trials_completed": 5,
+      "num_queries": 1000,
+      "recall": {
+        "recall_at_1": 0.178,
+        "recall_at_5": 0.1596,
+        "recall_at_10": 0.1554
+      },
+      "qps": {
+        "median": 5461.16,
+        "mean": 4984.19,
+        "std": 944.94,
+        "min": 3748.41,
+        "max": 6062.53
+      },
+      "latency_percentiles_ms": {
+        "mean": 0.18,
+        "p50": 0.18,
+        "p90": 0.2,
+        "p95": 0.22,
+        "p99": 0.3
+      },
+      "ssd_io": {
+        "median_reads": 0,
+        "median_mb": 0.0
+      },
+      "parity_with_standalone": {
+        "bitwise_match_all_trials": false,
+        "max_dist_diff": -1.0
+      }
+    },
+    "cold_only": {
+      "name": "COLD-Only (DiskANN3)",
+      "trials_completed": 5,
+      "num_queries": 1000,
+      "recall": {
+        "recall_at_1": 0.649,
+        "recall_at_5": 0.613,
+        "recall_at_10": 0.5843
+      },
+      "qps": {
+        "median": 81.48,
+        "mean": 81.28,
+        "std": 2.41,
+        "min": 77.87,
+        "max": 84.73
+      },
+      "latency_percentiles_ms": {
+        "mean": 82.58,
+        "p50": 79.67,
+        "p90": 95.19,
+        "p95": 100.62,
+        "p99": 136.76
+      },
+      "ssd_io": {
+        "median_reads": 50000,
+        "median_mb": 24.4141
+      },
+      "parity_with_standalone": {
+        "bitwise_match_all_trials": false,
+        "max_dist_diff": -1.0
+      }
+    },
+    "router_all_tiers": {
+      "name": "Router ALL_TIERS",
+      "trials_completed": 5,
+      "num_queries": 1000,
+      "recall": {
+        "recall_at_1": 0.827,
+        "recall_at_5": 0.7726,
+        "recall_at_10": 0.7397
+      },
+      "qps": {
+        "median": 84.54,
+        "mean": 84.5,
+        "std": 1.14,
+        "min": 83.09,
+        "max": 85.94
+      },
+      "latency_percentiles_ms": {
+        "mean": 77.36,
+        "p50": 76.33,
+        "p90": 88.71,
+        "p95": 94.21,
+        "p99": 106.71
+      },
+      "ssd_io": {
+        "median_reads": 50000,
+        "median_mb": 24.4141
+      },
+      "parity_with_standalone": {
+        "bitwise_match_all_trials": true,
+        "max_dist_diff": 0.0
+      }
+    },
+    "adaptive_router": {
+      "name": "Adaptive Router (tau=145)",
+      "trials_completed": 5,
+      "num_queries": 1000,
+      "recall": {
+        "recall_at_1": 0.753,
+        "recall_at_5": 0.6832,
+        "recall_at_10": 0.6479
+      },
+      "qps": {
+        "median": 94.28,
+        "mean": 92.34,
+        "std": 7.11,
+        "min": 79.52,
+        "max": 99.19
+      },
+      "latency_percentiles_ms": {
+        "mean": 66.23,
+        "p50": 74.97,
+        "p90": 90.32,
+        "p95": 97.25,
+        "p99": 118.31
+      },
+      "ssd_io": {
+        "median_reads": 42050,
+        "median_mb": 20.5322
+      },
+      "parity_with_standalone": {
+        "bitwise_match_all_trials": false,
+        "max_dist_diff": -1.0
+      }
+    },
+    "hybrid_pipeline": {
+      "name": "Hybrid Pipeline (HOT+COLD)",
+      "trials_completed": 5,
+      "num_queries": 1000,
+      "recall": {
+        "recall_at_1": 0.827,
+        "recall_at_5": 0.7726,
+        "recall_at_10": 0.7397
+      },
+      "qps": {
+        "median": 81.43,
+        "mean": 78.9,
+        "std": 8.31,
+        "min": 68.42,
+        "max": 90.43
+      },
+      "latency_percentiles_ms": {
+        "mean": 82.5,
+        "p50": 80.5,
+        "p90": 105.01,
+        "p95": 112.82,
+        "p99": 126.89
+      },
+      "ssd_io": {
+        "median_reads": 50000,
+        "median_mb": 24.4141
+      },
+      "parity_with_standalone": {
+        "bitwise_match_all_trials": true,
+        "max_dist_diff": 0.0
+      }
+    },
+    "native_milvus_flat": {
+      "name": "Native Milvus (FLAT)",
+      "trials_completed": 5,
+      "num_queries": 100,
+      "recall": {
+        "recall_at_1": 1.0,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0
+      },
+      "qps": {
+        "median": 10.43,
+        "mean": 12.99,
+        "std": 3.58,
+        "min": 10.0,
+        "max": 18.78
+      },
+      "latency_percentiles_ms": {
+        "mean": 95.91,
+        "p50": 94.95,
+        "p90": 105.5,
+        "p95": 113.17,
+        "p99": 124.68
+      },
+      "ssd_io": {
+        "median_reads": 0,
+        "median_mb": 0.0
+      },
+      "parity_with_standalone": {
+        "bitwise_match_all_trials": false,
+        "max_dist_diff": -1.0
+      }
+    }
+  }
+}

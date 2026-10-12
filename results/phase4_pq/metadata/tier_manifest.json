@@ -1,0 +1,65 @@
+{
+  "model_name": "Phase 4 Hot/Cold Logical Tier Model",
+  "capacity_config": {
+    "total_vectors": 100000,
+    "dimension": 128,
+    "hot_ratio": 0.18,
+    "expected_hot_count": 18000,
+    "expected_cold_count": 82000
+  },
+  "current_state": {
+    "hot_count": 18000,
+    "cold_count": 82000,
+    "hot_membership_sha256": "f04eff50693c5655425466a3a54c969f1a28cfe0f946d3085849bfe23cc365cc",
+    "cold_membership_sha256": "bb15f91995d033df66d42223d7495b1214d9b7d05ff60300184d3329a2dc4b36",
+    "hot_id_range": [
+      0,
+      17999
+    ],
+    "cold_id_range": [
+      18000,
+      99999
+    ]
+  },
+  "storage_layout": {
+    "dram_resident": {
+      "pq_codes": {
+        "path": "results/phase4_pq/codes/base_pq_codes.bin",
+        "vector_count": 100000,
+        "size_bytes": 1600000,
+        "role": "Search-tier compressed representation for both HOT and COLD vectors"
+      },
+      "pq_codebooks": {
+        "path": "results/phase4_pq/codebooks/pq_codebooks.npy",
+        "size_bytes": 131072,
+        "role": "In-memory LUT generation for ADC queries"
+      },
+      "hot_full_vectors": {
+        "count": 18000,
+        "role": "DRAM-resident full-precision vectors for HOT tier"
+      }
+    },
+    "nvme_resident": {
+      "cold_full_vectors": {
+        "path": "storage/ssd_vectors/vectors.bin",
+        "count": 82000,
+        "size_bytes": 41984000,
+        "role": "Full-precision vectors on NVMe for exact reranking"
+      },
+      "future_phase5_diskann": {
+        "role": "DiskANN graph structure to be created in Phase 5 on NVMe"
+      }
+    }
+  },
+  "validation": {
+    "is_valid": true,
+    "total_vectors": 100000,
+    "hot_count": 18000,
+    "cold_count": 82000,
+    "hot_ratio": 0.18,
+    "cold_ratio": 0.82,
+    "is_disjoint": true,
+    "is_exhaustive": true,
+    "overlap_count": 0
+  }
+}

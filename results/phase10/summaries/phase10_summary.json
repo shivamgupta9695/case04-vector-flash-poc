@@ -1,0 +1,13 @@
+{
+  "phase": 10,
+  "status": "PASS",
+  "total_configurations": 9,
+  "trials_per_config": 5,
+  "standalone_qps_median": 81.43,
+  "adapter_qps_median": 81.35,
+  "standalone_recall_10": 0.7397,
+  "adapter_recall_10": 0.7397,
+  "adapter_bitwise_parity": true,
+  "faiss_full_qps_median": 4303.67,
+  "native_milvus_qps_median": 10.43
+}

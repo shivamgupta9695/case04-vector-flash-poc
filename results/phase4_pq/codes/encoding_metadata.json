@@ -1,0 +1,36 @@
+{
+  "component": "Phase 4 Base Vectors PQ Codes",
+  "shape": [
+    100000,
+    16
+  ],
+  "dtype": "uint8",
+  "code_bytes_per_vector": 16,
+  "total_vectors": 100000,
+  "total_code_bytes": 1600000,
+  "artifacts": {
+    "base_pq_codes_bin": {
+      "file": "base_pq_codes.bin",
+      "sha256": "984ac8cf84d4c7ffd0a8ce1a4901fbaaedb9bdd96210f5e0c4d73473fcc3aca9",
+      "bytes": 1600000,
+      "format": "Raw uint8 flat array, shape (N, M), row-major (C-contiguous)"
+    },
+    "base_pq_codes_npy": {
+      "file": "base_pq_codes.npy",
+      "sha256": "868976c35646004f6ab100e533cb5d961f140c4fa56213276cde69a620a759ed",
+      "bytes": 1600128
+    }
+  },
+  "validation": {
+    "is_valid": true,
+    "num_vectors": 100000,
+    "num_subquantizers": 16,
+    "dtype": "uint8",
+    "min_code": 0,
+    "max_code": 255,
+    "total_bytes": 1600000
+  },
+  "extra": {
+    "encoding_time_seconds": 0.5344264000013936
+  }
+}

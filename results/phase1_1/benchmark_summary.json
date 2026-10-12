@@ -1,0 +1,97 @@
+{
+  "configuration": {
+    "base_vectors": 100000,
+    "queries": 1000,
+    "dimension": 128,
+    "top_k": 10,
+    "metric": "L2_SQUARED",
+    "dtype": "<class 'numpy.float32'>",
+    "base_seed": 42,
+    "query_seed": 43,
+    "faiss_index": "IndexFlatL2"
+  },
+  "environment": {
+    "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "numpy_version": "2.5.3",
+    "faiss_version": "1.15.1"
+  },
+  "timings_seconds": {
+    "dataset_generation": 0.2628,
+    "index_creation": 0.0151,
+    "exact_search": 0.2358,
+    "file_writing": 0.1221,
+    "total_execution": 0.6367
+  },
+  "checksums": {
+    "base_vectors_sha256": "62a7ad69bc429570fb4819287bb4d317d8069fb784ef528f370c64189d37198b",
+    "query_vectors_sha256": "c1d80d61714296078229bc3429a79569113441c01fdd1069de21611a30528496",
+    "ground_truth_sha256": "ee2f420a3fea4e71408756f6d0bf7bed1741a69dafc119b2781f7b4142c7d66f",
+    "ground_truth_distances_sha256": "3ca693e88fdfab960b0d43412b8a66266259407615feeb1a1f61ffc083b0ffc4"
+  },
+  "file_sizes_bytes": {
+    "base_vectors_fvecs": 51600000,
+    "query_vectors_fvecs": 516000,
+    "ground_truth_ivecs": 44000,
+    "ground_truth_distances_fvecs": 44000
+  },
+  "manual_nn_checks": [
+    {
+      "query_idx": 0,
+      "manual_id": 64064,
+      "faiss_id": 64064,
+      "manual_dist": 156.64987182617188,
+      "faiss_dist": 156.64988708496094,
+      "id_match": true,
+      "dist_match": true
+    },
+    {
+      "query_idx": 1,
+      "manual_id": 73784,
+      "faiss_id": 73784,
+      "manual_dist": 136.78514099121094,
+      "faiss_dist": 136.78515625,
+      "id_match": true,
+      "dist_match": true
+    },
+    {
+      "query_idx": 42,
+      "manual_id": 60016,
+      "faiss_id": 60016,
+      "manual_dist": 160.0638885498047,
+      "faiss_dist": 160.0639190673828,
+      "id_match": true,
+      "dist_match": true
+    },
+    {
+      "query_idx": 500,
+      "manual_id": 36677,
+      "faiss_id": 36677,
+      "manual_dist": 144.69158935546875,
+      "faiss_dist": 144.69158935546875,
+      "id_match": true,
+      "dist_match": true
+    },
+    {
+      "query_idx": 999,
+      "manual_id": 74115,
+      "faiss_id": 74115,
+      "manual_dist": 161.45834350585938,
+      "faiss_dist": 161.45834350585938,
+      "id_match": true,
+      "dist_match": true
+    }
+  ],
+  "validations": {
+    "Base shape": "PASS",
+    "Query shape": "PASS",
+    "dtype": "PASS",
+    "Index size": "PASS",
+    "Search output": "PASS",
+    "ID range": "PASS",
+    "Finite values": "PASS",
+    "File write": "PASS",
+    "File read": "PASS",
+    "Manual NN check": "PASS",
+    "Determinism": "PASS"
+  }
+}

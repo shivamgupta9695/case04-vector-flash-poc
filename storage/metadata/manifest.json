@@ -1,0 +1,11 @@
+{
+  "num_vectors": 100000,
+  "dimension": 128,
+  "record_bytes": 512,
+  "total_bytes": 51200000,
+  "file_sha256": "a5337c911b10bcd697652595852eb4ccb3a6ae69a438b8414ab557d822c6ab8f",
+  "source_fvecs": "C:\\Users\\shivam.gupta\\Desktop\\Case04_Vector_POC\\data\\base_vectors.fvecs",
+  "created_at": "2026-10-07T11:44:09Z",
+  "storage_media": "NVMe SSD (BC711 NVMe SK hynix 512GB)",
+  "filesystem": "NTFS"
+}

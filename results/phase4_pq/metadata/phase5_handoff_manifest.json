@@ -1,0 +1,46 @@
+{
+  "phase": "Phase 4 -> Phase 5 Handoff",
+  "description": "Artifacts and data structures for Phase 5 (DiskANN + NVMe COLD vectors)",
+  "timestamp": "2026-10-08T10:30:05Z",
+  "frozen_dataset": {
+    "base_vectors_file": "data/base_vectors.fvecs",
+    "base_sha256": "62a7ad69bc429570fb4819287bb4d317d8069fb784ef528f370c64189d37198b",
+    "query_vectors_file": "data/query_vectors.fvecs",
+    "query_sha256": "c1d80d61714296078229bc3429a79569113441c01fdd1069de21611a30528496",
+    "ground_truth_file": "data/ground_truth.ivecs",
+    "gt_sha256": "ee2f420a3fea4e71408756f6d0bf7bed1741a69dafc119b2781f7b4142c7d66f",
+    "num_base_vectors": 100000,
+    "num_queries": 1000,
+    "dimension": 128,
+    "dtype": "float32"
+  },
+  "pq_artifacts": {
+    "codebooks_file": "results/phase4_pq/codebooks/pq_codebooks.npy",
+    "codebooks_sha256": "dfaae246699e1e75dfb87a7480a6057a8745fbe824a3365a1456b6901426559c",
+    "codes_bin_file": "results/phase4_pq/codes/base_pq_codes.bin",
+    "codes_bin_sha256": "984ac8cf84d4c7ffd0a8ce1a4901fbaaedb9bdd96210f5e0c4d73473fcc3aca9",
+    "codes_npy_file": "results/phase4_pq/codes/base_pq_codes.npy",
+    "codes_npy_sha256": "868976c35646004f6ab100e533cb5d961f140c4fa56213276cde69a620a759ed",
+    "m": 16,
+    "ks": 256,
+    "dsub": 8,
+    "code_bytes_per_vector": 16
+  },
+  "cold_tier_for_phase5_diskann": {
+    "cold_manifest_file": "results/phase4_pq/metadata/cold_vector_manifest.json",
+    "num_cold_vectors": 82000,
+    "nvme_store_file": "storage/ssd_vectors/vectors.bin",
+    "nvme_offset_rule": "byte_offset = vector_id * 128 * 4",
+    "first_cold_id": 18000,
+    "last_cold_id": 99999
+  },
+  "search_quality_baseline": {
+    "adc_recall_at_1": 0.078,
+    "adc_recall_at_5": 0.125,
+    "adc_recall_at_10": 0.1374,
+    "adc_candidate_recall_10_in_100": 0.4438,
+    "reconstruction_mse": 0.317669,
+    "reconstruction_rmse": 0.563621,
+    "reconstruction_relative_l2_error": 0.563733
+  }
+}

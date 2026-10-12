@@ -1,0 +1,393 @@
+{
+  "timestamp": "2026-10-10T12:14:34.772894+00:00",
+  "status": "PASS",
+  "phase": 6,
+  "dataset": {
+    "total_vectors": 100000,
+    "dimension": 128,
+    "num_queries": 1000,
+    "hot_vector_count": 18000,
+    "cold_vector_count": 82000,
+    "hot_id_range": [
+      0,
+      17999
+    ],
+    "cold_id_range": [
+      18000,
+      99999
+    ]
+  },
+  "memory_footprint": {
+    "hot_hnsw_serialized_mb": 13.46,
+    "hot_dram_vectors_mb": 8.79,
+    "cold_diskann_dram_pq_mb": 2.63,
+    "phase4_pq_dram_mb": 1.66,
+    "total_dram_footprint_mb": 26.54,
+    "unique_search_index_dram_mb": 17.75,
+    "dram_savings_vs_full_hnsw_pct": 64.5,
+    "cold_diskann_nvme_index_mb": 64.07,
+    "cold_nvme_raw_vectors_mb": 40.04,
+    "total_logical_cold_nvme_mb": 104.11,
+    "total_physical_nvme_files_mb": 115.53
+  },
+  "parameter_sweep": [
+    {
+      "name": "Low Latency",
+      "parameters": {
+        "name": "Low Latency",
+        "k_hot": 20,
+        "k_cold": 20,
+        "l_cold": 30,
+        "ef_hot": 32
+      },
+      "metrics": {
+        "num_queries": 1000,
+        "k": 10,
+        "recall_metrics": {
+          "recall_at_1": 0.625,
+          "recall_at_5": 0.5534000000000001,
+          "recall_at_10": 0.5095
+        },
+        "qps": 375.12,
+        "total_elapsed_ms": 2665.82,
+        "mean_latency_ms": 13.97,
+        "p50_latency_ms": 13.606,
+        "p90_latency_ms": 17.697,
+        "p95_latency_ms": 19.453,
+        "p99_latency_ms": 22.431,
+        "timing_breakdown": {
+          "hot_search_ms": 25.06,
+          "cold_search_ms": 2401.35,
+          "rerank_ms": 239.24
+        },
+        "candidate_stats": {
+          "mean_raw_candidates": 40.0,
+          "mean_dedup_candidates": 40.0,
+          "dedup_reduction_pct": 0.0
+        },
+        "tier_distribution": {
+          "hot_pct": 28.82,
+          "cold_pct": 71.18
+        },
+        "prediction_validation": {
+          "is_valid": true,
+          "num_queries": 1000,
+          "k": 10,
+          "has_negative_ids": false,
+          "has_out_of_bounds_ids": false,
+          "has_duplicate_ids": false,
+          "rows_with_duplicates": 0
+        },
+        "monotonic_violations": 0,
+        "io_stats": {
+          "dram_reads": 20000,
+          "ssd_reads": 20000,
+          "total_reads": 40000,
+          "dram_hit_rate_pct": 50.0,
+          "ssd_bytes_read": 10240000,
+          "ssd_read_mb": 9.766,
+          "ssd_avg_read_latency_ms": 0.00911,
+          "ssd_throughput_mb_s": 53.61
+        }
+      }
+    },
+    {
+      "name": "Balanced Low",
+      "parameters": {
+        "name": "Balanced Low",
+        "k_hot": 30,
+        "k_cold": 30,
+        "l_cold": 50,
+        "ef_hot": 40
+      },
+      "metrics": {
+        "num_queries": 1000,
+        "k": 10,
+        "recall_metrics": {
+          "recall_at_1": 0.721,
+          "recall_at_5": 0.6486000000000001,
+          "recall_at_10": 0.6118999999999999
+        },
+        "qps": 268.38,
+        "total_elapsed_ms": 3726.0,
+        "mean_latency_ms": 21.63,
+        "p50_latency_ms": 21.244,
+        "p90_latency_ms": 26.337,
+        "p95_latency_ms": 27.797,
+        "p99_latency_ms": 31.223,
+        "timing_breakdown": {
+          "hot_search_ms": 26.03,
+          "cold_search_ms": 3368.5,
+          "rerank_ms": 331.22
+        },
+        "candidate_stats": {
+          "mean_raw_candidates": 60.0,
+          "mean_dedup_candidates": 60.0,
+          "dedup_reduction_pct": 0.0
+        },
+        "tier_distribution": {
+          "hot_pct": 24.45,
+          "cold_pct": 75.55
+        },
+        "prediction_validation": {
+          "is_valid": true,
+          "num_queries": 1000,
+          "k": 10,
+          "has_negative_ids": false,
+          "has_out_of_bounds_ids": false,
+          "has_duplicate_ids": false,
+          "rows_with_duplicates": 0
+        },
+        "monotonic_violations": 0,
+        "io_stats": {
+          "dram_reads": 50000,
+          "ssd_reads": 50000,
+          "total_reads": 100000,
+          "dram_hit_rate_pct": 50.0,
+          "ssd_bytes_read": 25600000,
+          "ssd_read_mb": 24.414,
+          "ssd_avg_read_latency_ms": 0.00898,
+          "ssd_throughput_mb_s": 54.39
+        }
+      }
+    },
+    {
+      "name": "Balanced High",
+      "parameters": {
+        "name": "Balanced High",
+        "k_hot": 50,
+        "k_cold": 50,
+        "l_cold": 80,
+        "ef_hot": 64
+      },
+      "metrics": {
+        "num_queries": 1000,
+        "k": 10,
+        "recall_metrics": {
+          "recall_at_1": 0.792,
+          "recall_at_5": 0.7376,
+          "recall_at_10": 0.7044000000000001
+        },
+        "qps": 133.85,
+        "total_elapsed_ms": 7470.97,
+        "mean_latency_ms": 46.017,
+        "p50_latency_ms": 47.071,
+        "p90_latency_ms": 56.623,
+        "p95_latency_ms": 59.572,
+        "p99_latency_ms": 65.779,
+        "timing_breakdown": {
+          "hot_search_ms": 37.58,
+          "cold_search_ms": 6710.6,
+          "rerank_ms": 722.55
+        },
+        "candidate_stats": {
+          "mean_raw_candidates": 100.0,
+          "mean_dedup_candidates": 100.0,
+          "dedup_reduction_pct": 0.0
+        },
+        "tier_distribution": {
+          "hot_pct": 22.72,
+          "cold_pct": 77.28
+        },
+        "prediction_validation": {
+          "is_valid": true,
+          "num_queries": 1000,
+          "k": 10,
+          "has_negative_ids": false,
+          "has_out_of_bounds_ids": false,
+          "has_duplicate_ids": false,
+          "rows_with_duplicates": 0
+        },
+        "monotonic_violations": 0,
+        "io_stats": {
+          "dram_reads": 100000,
+          "ssd_reads": 100000,
+          "total_reads": 200000,
+          "dram_hit_rate_pct": 50.0,
+          "ssd_bytes_read": 51200000,
+          "ssd_read_mb": 48.828,
+          "ssd_avg_read_latency_ms": 0.01049,
+          "ssd_throughput_mb_s": 46.56
+        }
+      }
+    },
+    {
+      "name": "High Recall",
+      "parameters": {
+        "name": "High Recall",
+        "k_hot": 60,
+        "k_cold": 60,
+        "l_cold": 100,
+        "ef_hot": 100
+      },
+      "metrics": {
+        "num_queries": 1000,
+        "k": 10,
+        "recall_metrics": {
+          "recall_at_1": 0.833,
+          "recall_at_5": 0.7806000000000001,
+          "recall_at_10": 0.7487999999999999
+        },
+        "qps": 69.21,
+        "total_elapsed_ms": 14448.54,
+        "mean_latency_ms": 99.551,
+        "p50_latency_ms": 69.745,
+        "p90_latency_ms": 217.346,
+        "p95_latency_ms": 260.632,
+        "p99_latency_ms": 345.877,
+        "timing_breakdown": {
+          "hot_search_ms": 65.49,
+          "cold_search_ms": 13555.04,
+          "rerank_ms": 827.64
+        },
+        "candidate_stats": {
+          "mean_raw_candidates": 120.0,
+          "mean_dedup_candidates": 120.0,
+          "dedup_reduction_pct": 0.0
+        },
+        "tier_distribution": {
+          "hot_pct": 22.52,
+          "cold_pct": 77.48
+        },
+        "prediction_validation": {
+          "is_valid": true,
+          "num_queries": 1000,
+          "k": 10,
+          "has_negative_ids": false,
+          "has_out_of_bounds_ids": false,
+          "has_duplicate_ids": false,
+          "rows_with_duplicates": 0
+        },
+        "monotonic_violations": 0,
+        "io_stats": {
+          "dram_reads": 160000,
+          "ssd_reads": 160000,
+          "total_reads": 320000,
+          "dram_hit_rate_pct": 50.0,
+          "ssd_bytes_read": 81920000,
+          "ssd_read_mb": 78.125,
+          "ssd_avg_read_latency_ms": 0.01091,
+          "ssd_throughput_mb_s": 44.75
+        }
+      }
+    },
+    {
+      "name": "Max Recall",
+      "parameters": {
+        "name": "Max Recall",
+        "k_hot": 100,
+        "k_cold": 100,
+        "l_cold": 150,
+        "ef_hot": 160
+      },
+      "metrics": {
+        "num_queries": 1000,
+        "k": 10,
+        "recall_metrics": {
+          "recall_at_1": 0.883,
+          "recall_at_5": 0.8478000000000001,
+          "recall_at_10": 0.8217000000000001
+        },
+        "qps": 69.66,
+        "total_elapsed_ms": 14356.35,
+        "mean_latency_ms": 93.878,
+        "p50_latency_ms": 93.07,
+        "p90_latency_ms": 104.925,
+        "p95_latency_ms": 108.421,
+        "p99_latency_ms": 115.377,
+        "timing_breakdown": {
+          "hot_search_ms": 89.95,
+          "cold_search_ms": 13026.23,
+          "rerank_ms": 1239.5
+        },
+        "candidate_stats": {
+          "mean_raw_candidates": 200.0,
+          "mean_dedup_candidates": 200.0,
+          "dedup_reduction_pct": 0.0
+        },
+        "tier_distribution": {
+          "hot_pct": 21.29,
+          "cold_pct": 78.71
+        },
+        "prediction_validation": {
+          "is_valid": true,
+          "num_queries": 1000,
+          "k": 10,
+          "has_negative_ids": false,
+          "has_out_of_bounds_ids": false,
+          "has_duplicate_ids": false,
+          "rows_with_duplicates": 0
+        },
+        "monotonic_violations": 0,
+        "io_stats": {
+          "dram_reads": 260000,
+          "ssd_reads": 260000,
+          "total_reads": 520000,
+          "dram_hit_rate_pct": 50.0,
+          "ssd_bytes_read": 133120000,
+          "ssd_read_mb": 126.953,
+          "ssd_avg_read_latency_ms": 0.01081,
+          "ssd_throughput_mb_s": 45.15
+        }
+      }
+    }
+  ],
+  "baselines": {
+    "phase2_hnsw_ef80": {
+      "name": "Phase 2 HNSW Flat (M=32, efS=80)",
+      "storage_tier": "100% DRAM (100k vectors)",
+      "recall_at_1": 0.707,
+      "recall_at_5": 0.6414,
+      "recall_at_10": 0.6148,
+      "qps": 3678.4,
+      "p50_latency_ms": 0.46,
+      "p95_latency_ms": 0.58,
+      "dram_footprint_mb": 74.79,
+      "nvme_footprint_mb": 0.0
+    },
+    "phase2_hnsw_ef160": {
+      "name": "Phase 2 HNSW Flat (M=32, efS=160)",
+      "storage_tier": "100% DRAM (100k vectors)",
+      "recall_at_1": 0.819,
+      "recall_at_5": 0.7782,
+      "recall_at_10": 0.7566,
+      "qps": 1974.7,
+      "p50_latency_ms": 0.88,
+      "p95_latency_ms": 1.31,
+      "dram_footprint_mb": 74.79,
+      "nvme_footprint_mb": 0.0
+    },
+    "phase5_cold_diskann_l100": {
+      "name": "Phase 5 COLD DiskANN3 (L=100)",
+      "storage_tier": "COLD Only (82k vectors, NVMe SSD)",
+      "cold_recall_at_10": 0.7009,
+      "global_coverage_at_10": 0.5843,
+      "qps": 135.2,
+      "p50_latency_ms": 64.19,
+      "p95_latency_ms": 99.96,
+      "dram_footprint_mb": 2.63,
+      "nvme_footprint_mb": 66.7
+    },
+    "phase5_cold_diskann_l150": {
+      "name": "Phase 5 COLD DiskANN3 (L=150)",
+      "storage_tier": "COLD Only (82k vectors, NVMe SSD)",
+      "cold_recall_at_10": 0.7812,
+      "global_coverage_at_10": 0.6501,
+      "qps": 85.6,
+      "p50_latency_ms": 92.94,
+      "p95_latency_ms": 102.81,
+      "dram_footprint_mb": 2.63,
+      "nvme_footprint_mb": 66.7
+    },
+    "exact_faiss_flat": {
+      "name": "Exact FAISS FlatL2 Oracle",
+      "storage_tier": "Evaluation Reference",
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "qps": 4570.8,
+      "p50_latency_ms": 5.23,
+      "p95_latency_ms": 6.62
+    }
+  }
+}

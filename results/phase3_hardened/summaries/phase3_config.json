@@ -1,0 +1,37 @@
+{
+  "dataset": "SIFT100K (N=100,000, D=128, K=10)",
+  "dataset_sha256": "62a7ad69bc429570fb4819287bb4d317d8069fb784ef528f370c64189d37198b",
+  "query_sha256": "c1d80d61714296078229bc3429a79569113441c01fdd1069de21611a30528496",
+  "ground_truth_sha256": "ee2f420a3fea4e71408756f6d0bf7bed1741a69dafc119b2781f7b4142c7d66f",
+  "random_seed": 42,
+  "hnsw": {
+    "M": 32,
+    "efConstruction": 40,
+    "efSearch": 40
+  },
+  "capacities_tested": [
+    1.0,
+    0.5,
+    0.25,
+    0.18,
+    0.1
+  ],
+  "workloads": [
+    "Uniform",
+    "Zipf (alpha=1.25)",
+    "Hotspot (80/20)"
+  ],
+  "policy_b_parameters": {
+    "admission_min_access": 2,
+    "admission_min_hotness": 1.0,
+    "promotion_threshold": 1.1,
+    "demotion_threshold": 0.5,
+    "hysteresis_margin": 0.2,
+    "min_residency_time": 0.05,
+    "cooldown_time": 0.05
+  },
+  "hardware": {
+    "cpu": "11th Gen Intel(R) Core(TM) i5-1145G7 @ 2.60GHz (8 cores)",
+    "storage_media": "BC711 NVMe SK hynix 512GB (NTFS)"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "sample_count": 950,
+  "min_ms": 0.4758,
+  "p50_ms": 12.1615,
+  "p90_ms": 20.491,
+  "p95_ms": 22.5466,
+  "p99_ms": 26.0139,
+  "max_ms": 29.5007,
+  "mean_ms": 10.2356,
+  "stddev_ms": 8.2137,
+  "mean_over_p95_ratio": 0.454,
+  "total_promotions": 8032,
+  "total_demotions": 8032,
+  "total_ssd_reads": 8032,
+  "total_dram_hits": 29968
+}

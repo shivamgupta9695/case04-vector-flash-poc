@@ -1,0 +1,161 @@
+{
+  "phase": "Phase 4",
+  "title": "Product Quantization & HOT/COLD Tier Data Model",
+  "status": "PASS",
+  "timestamp": "2026-10-08T10:30:05Z",
+  "total_execution_seconds": 82.39,
+  "dataset": {
+    "num_base_vectors": 100000,
+    "num_queries": 1000,
+    "dimension": 128,
+    "dtype": "float32"
+  },
+  "pq_configuration": {
+    "dimension": 128,
+    "num_subquantizers": 16,
+    "centroids_per_subquantizer": 256,
+    "nbits": 8,
+    "random_seed": 42,
+    "niter": 25,
+    "training_sample_count": 100000,
+    "subvector_dimension": 8,
+    "code_bytes_per_vector": 16
+  },
+  "storage_accounting": {
+    "fp32_vector_bytes": 51200000,
+    "pq_code_bytes": 1600000,
+    "codebook_bytes": 131072,
+    "metadata_bytes": 987762,
+    "total_pq_representation_bytes": 2718834,
+    "code_only_compression_ratio": 32.0,
+    "effective_compression_ratio": 18.83
+  },
+  "reconstruction_error": {
+    "mse": 0.317669,
+    "rmse": 0.563621,
+    "relative_l2_error": 0.563733
+  },
+  "tier_model": {
+    "total_vectors": 100000,
+    "hot_count": 18000,
+    "cold_count": 82000,
+    "hot_ratio": 0.18,
+    "cold_ratio": 0.82,
+    "invariants_pass": true
+  },
+  "search_benchmark": {
+    "exact_fp32": {
+      "num_queries": 1000,
+      "k": 100,
+      "total_time_seconds": 5.5729,
+      "avg_latency_ms": 5.5599,
+      "p50_latency_ms": 5.4145,
+      "p95_latency_ms": 6.8427,
+      "p99_latency_ms": 8.2105,
+      "qps": 179.44,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "candidate_recall_10_in_100": 1.0,
+      "recall_at_100": 1.0,
+      "sample_predictions_q0": [
+        64064,
+        65914,
+        77518,
+        3915,
+        51260,
+        75276,
+        77040,
+        97477,
+        28491,
+        57559
+      ],
+      "method_name": "Exact FP32"
+    },
+    "adc_numpy": {
+      "num_queries": 1000,
+      "k": 100,
+      "total_time_seconds": 5.5228,
+      "avg_latency_ms": 5.5173,
+      "p50_latency_ms": 5.2453,
+      "p95_latency_ms": 7.9264,
+      "p99_latency_ms": 9.8172,
+      "qps": 181.07,
+      "recall_at_1": 0.078,
+      "recall_at_5": 0.125,
+      "recall_at_10": 0.1374,
+      "candidate_recall_10_in_100": 0.4438,
+      "recall_at_100": 0.20868,
+      "sample_predictions_q0": [
+        49888,
+        62773,
+        4431,
+        92770,
+        78332,
+        74658,
+        34255,
+        74844,
+        75919,
+        47475
+      ],
+      "method_name": "Custom ADC"
+    },
+    "reconstructed_pq": {
+      "num_queries": 1000,
+      "k": 100,
+      "total_time_seconds": 40.2254,
+      "avg_latency_ms": 40.2193,
+      "p50_latency_ms": 39.4082,
+      "p95_latency_ms": 47.0682,
+      "p99_latency_ms": 57.8823,
+      "qps": 24.86,
+      "recall_at_1": 0.078,
+      "recall_at_5": 0.125,
+      "recall_at_10": 0.1374,
+      "candidate_recall_10_in_100": 0.4438,
+      "recall_at_100": 0.20868,
+      "sample_predictions_q0": [
+        49888,
+        62773,
+        4431,
+        92770,
+        78332,
+        74658,
+        34255,
+        74844,
+        75919,
+        47475
+      ],
+      "method_name": "Reconstructed PQ"
+    },
+    "faiss_index_pq": {
+      "num_queries": 1000,
+      "k": 100,
+      "total_time_seconds": 2.5622,
+      "avg_latency_ms": 2.5557,
+      "p50_latency_ms": 2.3398,
+      "p95_latency_ms": 3.7399,
+      "p99_latency_ms": 5.0021,
+      "qps": 390.29,
+      "recall_at_1": 0.078,
+      "recall_at_5": 0.125,
+      "recall_at_10": 0.1374,
+      "candidate_recall_10_in_100": 0.4438,
+      "recall_at_100": 0.20868,
+      "sample_predictions_q0": [
+        49888,
+        62773,
+        4431,
+        92770,
+        78332,
+        74658,
+        34255,
+        74844,
+        75919,
+        47475
+      ],
+      "method_name": "FAISS IndexPQ"
+    }
+  },
+  "phase5_readiness": "READY"
+}

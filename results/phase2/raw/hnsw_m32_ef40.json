@@ -1,0 +1,49 @@
+{
+  "method": "HNSW (M=32, ef=40)",
+  "index_type": "IndexHNSWFlat",
+  "m": 32,
+  "ef_construction": 40,
+  "ef_search": 40,
+  "build_time_sec": 12.3897,
+  "index_size_mb": 74.79,
+  "recall_at_1": 0.545,
+  "recall_at_5": 0.483,
+  "recall_at_10": 0.4553,
+  "batch_avg_latency_ms": 0.152,
+  "p50_latency_ms": 0.2613,
+  "p95_latency_ms": 0.3684,
+  "p99_latency_ms": 0.5301,
+  "qps": 6580.4,
+  "validation_pass": true,
+  "raw_details": {
+    "k": 10,
+    "recall_at_1": 0.545,
+    "recall_at_5": 0.483,
+    "recall_at_10": 0.4553,
+    "batch_avg_latency_ms": 0.152,
+    "batch_mean_time_sec": 0.15197,
+    "batch_min_time_sec": 0.14679,
+    "batch_max_time_sec": 0.15455,
+    "batch_runs": [
+      0.1521,
+      0.15205,
+      0.14679,
+      0.15434,
+      0.15455
+    ],
+    "qps": 6580.4,
+    "p50_latency_ms": 0.2613,
+    "p95_latency_ms": 0.3684,
+    "p99_latency_ms": 0.5301,
+    "sample_size_individual": 200,
+    "validation": {
+      "is_valid": true,
+      "num_queries": 1000,
+      "k": 10,
+      "has_negative_ids": false,
+      "has_out_of_bounds_ids": false,
+      "has_duplicate_ids": false,
+      "rows_with_duplicates": 0
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-10-10T11:16:19Z",
+  "status": "PASS",
+  "duration_seconds": 0.635,
+  "counts": {
+    "cold_vectors": 82000,
+    "query_vectors": 1000,
+    "dimension": 128,
+    "ground_truth_top_k": 100
+  },
+  "file_sizes": {
+    "cold_vectors_bin_bytes": 41984008,
+    "query_vectors_bin_bytes": 512008,
+    "cold_groundtruth_local_bin_bytes": 400008,
+    "cold_groundtruth_global_ivecs_bytes": 404000
+  },
+  "hashes": {
+    "cold_vectors_bin": "41dda6b156714552bed33c1f6b19f815ff27ee106f667dcf0906474b3ae09b2c",
+    "query_vectors_bin": "7a341730ae7959fe72dbc4c717667ae3a05bb2acef8b9fb1ba9cdaf4d27ee80a",
+    "cold_groundtruth_local_bin": "9348b11f854f7b7e6547ca3d8f2bdde5aac2009b73b6e1e5b64a2c3d8e62c802",
+    "cold_groundtruth_global_ivecs": "13c20f324bf3ad2603197536e8bd8548bb344f6305fa49cde374a472abd1f58c",
+    "cold_groundtruth_distances_npy": "6f0ea1adb423707d609e263e260764accb57c7c0253cef225d5ab4082822209e",
+    "id_mapping_json": "5674472b3bd5b714e55a28efae91c0650450ec1ef0e18a03344ce9f18fed2b4e"
+  }
+}

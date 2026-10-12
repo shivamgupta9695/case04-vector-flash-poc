@@ -1,0 +1,58 @@
+[
+  {
+    "workers": 1,
+    "total_queries": 500,
+    "wall_time_seconds": 12.7844,
+    "qps": 39.1,
+    "avg_latency_ms": 25.517,
+    "p50_latency_ms": 21.6221,
+    "p95_latency_ms": 63.6277,
+    "p99_latency_ms": 90.608,
+    "dram_hit_rate": 0.746,
+    "promotions": 2098,
+    "demotions": 2098,
+    "capacity_invariant_held": true
+  },
+  {
+    "workers": 2,
+    "total_queries": 500,
+    "wall_time_seconds": 7.75,
+    "qps": 64.5,
+    "avg_latency_ms": 30.9324,
+    "p50_latency_ms": 30.8087,
+    "p95_latency_ms": 75.1209,
+    "p99_latency_ms": 85.619,
+    "dram_hit_rate": 0.9031,
+    "promotions": 1689,
+    "demotions": 1689,
+    "capacity_invariant_held": true
+  },
+  {
+    "workers": 4,
+    "total_queries": 500,
+    "wall_time_seconds": 0.6454,
+    "qps": 774.7,
+    "avg_latency_ms": 5.0803,
+    "p50_latency_ms": 2.0366,
+    "p95_latency_ms": 21.1189,
+    "p99_latency_ms": 32.7441,
+    "dram_hit_rate": 0.9876,
+    "promotions": 83,
+    "demotions": 83,
+    "capacity_invariant_held": true
+  },
+  {
+    "workers": 8,
+    "total_queries": 500,
+    "wall_time_seconds": 0.2466,
+    "qps": 2027.3,
+    "avg_latency_ms": 3.7903,
+    "p50_latency_ms": 3.5967,
+    "p95_latency_ms": 6.8911,
+    "p99_latency_ms": 8.5909,
+    "dram_hit_rate": 0.9918,
+    "promotions": 0,
+    "demotions": 0,
+    "capacity_invariant_held": true
+  }
+]

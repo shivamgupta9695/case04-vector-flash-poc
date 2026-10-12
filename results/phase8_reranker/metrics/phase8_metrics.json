@@ -1,0 +1,132 @@
+{
+  "timestamp": "2026-10-11T09:04:11.484013+00:00",
+  "status": "PASS",
+  "phase": 8,
+  "candidate_union_analysis": {
+    "union_recall_at_1": 0.827,
+    "union_recall_at_5": 0.7726,
+    "union_recall_at_10": 0.7397,
+    "final_recall_at_1": 0.827,
+    "final_recall_at_5": 0.7726,
+    "final_recall_at_10": 0.7397,
+    "recall_preservation_fidelity_pct": 100.0,
+    "mean_candidate_pool_size": 100.0,
+    "min_candidate_pool_size": 100,
+    "max_candidate_pool_size": 100
+  },
+  "adaptive_recall_loss_analysis": [
+    {
+      "policy": "ADAPTIVE_THRESHOLD (tau=135.0)",
+      "threshold": 135.0,
+      "early_exit_count": 25,
+      "early_exit_rate_pct": 2.5,
+      "all_tiers_recall_at_1": 0.827,
+      "all_tiers_recall_at_5": 0.7726,
+      "all_tiers_recall_at_10": 0.7397,
+      "adaptive_recall_at_1": 0.82,
+      "adaptive_recall_at_5": 0.7572,
+      "adaptive_recall_at_10": 0.7242,
+      "recall_loss_at_1": 0.007,
+      "recall_loss_at_5": 0.0154,
+      "recall_loss_at_10": 0.0155,
+      "early_exits_with_closer_cold_neighbor": 9,
+      "pct_early_exits_with_closer_cold_neighbor": 36.0
+    },
+    {
+      "policy": "ADAPTIVE_THRESHOLD (tau=145.0)",
+      "threshold": 145.0,
+      "early_exit_count": 159,
+      "early_exit_rate_pct": 15.9,
+      "all_tiers_recall_at_1": 0.827,
+      "all_tiers_recall_at_5": 0.7726,
+      "all_tiers_recall_at_10": 0.7397,
+      "adaptive_recall_at_1": 0.753,
+      "adaptive_recall_at_5": 0.6832,
+      "adaptive_recall_at_10": 0.6479,
+      "recall_loss_at_1": 0.074,
+      "recall_loss_at_5": 0.0894,
+      "recall_loss_at_10": 0.0918,
+      "early_exits_with_closer_cold_neighbor": 90,
+      "pct_early_exits_with_closer_cold_neighbor": 56.6
+    },
+    {
+      "policy": "ADAPTIVE_THRESHOLD (tau=155.0)",
+      "threshold": 155.0,
+      "early_exit_count": 429,
+      "early_exit_rate_pct": 42.9,
+      "all_tiers_recall_at_1": 0.827,
+      "all_tiers_recall_at_5": 0.7726,
+      "all_tiers_recall_at_10": 0.7397,
+      "adaptive_recall_at_1": 0.589,
+      "adaptive_recall_at_5": 0.5206,
+      "adaptive_recall_at_10": 0.4932,
+      "recall_loss_at_1": 0.238,
+      "recall_loss_at_5": 0.252,
+      "recall_loss_at_10": 0.2465,
+      "early_exits_with_closer_cold_neighbor": 289,
+      "pct_early_exits_with_closer_cold_neighbor": 67.37
+    }
+  ],
+  "id_mapping_audit": {
+    "cold_vector_count": 82000,
+    "min_global_id": 18000,
+    "max_global_id": 99999,
+    "expected_min_global_id": 18000,
+    "expected_max_global_id": 99999,
+    "is_contiguous_linear_mapping": true,
+    "overlap_with_hot_count": 0
+  },
+  "distance_precision_audit": {
+    "samples_checked": 50,
+    "max_absolute_error": 3.0517578125e-05,
+    "mean_absolute_error": 1.068115234375e-05,
+    "tolerance_1e_4_satisfied": true
+  },
+  "edge_case_audit": {
+    "empty_candidates": {
+      "returned_count": 0,
+      "is_padded": true,
+      "all_negative_ones": true,
+      "all_inf_distances": true
+    },
+    "insufficient_candidates": {
+      "candidate_count": 3,
+      "returned_count": 3,
+      "is_padded": true,
+      "valid_ids_count": 3,
+      "padded_count": 7,
+      "is_monotonic": true
+    },
+    "duplicate_and_invalid_filtering": {
+      "total_raw": 11,
+      "dedup_count": 5,
+      "duplicates_removed": 3,
+      "invalid_rejected": 3,
+      "clean_ids": [
+        5,
+        10,
+        20,
+        20000,
+        25000
+      ],
+      "expected_clean": [
+        5,
+        10,
+        20,
+        20000,
+        25000
+      ],
+      "is_clean": true
+    },
+    "pure_hot_candidates": {
+      "hot_in_top_k": 5,
+      "cold_in_top_k": 0,
+      "all_in_hot_range": true
+    },
+    "pure_cold_candidates": {
+      "hot_in_top_k": 0,
+      "cold_in_top_k": 5,
+      "all_in_cold_range": true
+    }
+  }
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "interval": 1,
+    "queries_processed": 200,
+    "dram_hit_rate": 0.8044,
+    "ssd_reads_interval": 1565,
+    "promotions_interval": 1565,
+    "demotions_interval": 1565,
+    "avg_latency_ms": 9.2536,
+    "qps": 108.1
+  },
+  {
+    "interval": 2,
+    "queries_processed": 400,
+    "dram_hit_rate": 0.9107,
+    "ssd_reads_interval": 714,
+    "promotions_interval": 714,
+    "demotions_interval": 714,
+    "avg_latency_ms": 5.2846,
+    "qps": 189.2
+  },
+  {
+    "interval": 3,
+    "queries_processed": 600,
+    "dram_hit_rate": 0.9375,
+    "ssd_reads_interval": 500,
+    "promotions_interval": 500,
+    "demotions_interval": 500,
+    "avg_latency_ms": 3.5692,
+    "qps": 280.2
+  },
+  {
+    "interval": 4,
+    "queries_processed": 800,
+    "dram_hit_rate": 0.9406,
+    "ssd_reads_interval": 475,
+    "promotions_interval": 475,
+    "demotions_interval": 475,
+    "avg_latency_ms": 3.6026,
+    "qps": 277.6
+  },
+  {
+    "interval": 5,
+    "queries_processed": 1000,
+    "dram_hit_rate": 0.9493,
+    "ssd_reads_interval": 406,
+    "promotions_interval": 406,
+    "demotions_interval": 406,
+    "avg_latency_ms": 3.4269,
+    "qps": 291.8
+  },
+  {
+    "interval": 6,
+    "queries_processed": 1200,
+    "dram_hit_rate": 0.9636,
+    "ssd_reads_interval": 291,
+    "promotions_interval": 291,
+    "demotions_interval": 291,
+    "avg_latency_ms": 3.2441,
+    "qps": 308.3
+  },
+  {
+    "interval": 7,
+    "queries_processed": 1400,
+    "dram_hit_rate": 0.9639,
+    "ssd_reads_interval": 289,
+    "promotions_interval": 289,
+    "demotions_interval": 289,
+    "avg_latency_ms": 3.5408,
+    "qps": 282.4
+  },
+  {
+    "interval": 8,
+    "queries_processed": 1600,
+    "dram_hit_rate": 0.978,
+    "ssd_reads_interval": 176,
+    "promotions_interval": 176,
+    "demotions_interval": 176,
+    "avg_latency_ms": 2.4497,
+    "qps": 408.2
+  },
+  {
+    "interval": 9,
+    "queries_processed": 1800,
+    "dram_hit_rate": 0.9711,
+    "ssd_reads_interval": 231,
+    "promotions_interval": 231,
+    "demotions_interval": 231,
+    "avg_latency_ms": 2.3911,
+    "qps": 418.2
+  },
+  {
+    "interval": 10,
+    "queries_processed": 2000,
+    "dram_hit_rate": 0.971,
+    "ssd_reads_interval": 232,
+    "promotions_interval": 232,
+    "demotions_interval": 232,
+    "avg_latency_ms": 1.9661,
+    "qps": 508.6
+  },
+  {
+    "interval": 11,
+    "queries_processed": 2200,
+    "dram_hit_rate": 0.9778,
+    "ssd_reads_interval": 178,
+    "promotions_interval": 178,
+    "demotions_interval": 178,
+    "avg_latency_ms": 2.0084,
+    "qps": 497.9
+  },
+  {
+    "interval": 12,
+    "queries_processed": 2400,
+    "dram_hit_rate": 0.9832,
+    "ssd_reads_interval": 134,
+    "promotions_interval": 134,
+    "demotions_interval": 134,
+    "avg_latency_ms": 1.421,
+    "qps": 703.7
+  }
+]

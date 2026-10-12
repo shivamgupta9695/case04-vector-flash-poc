@@ -1,0 +1,47 @@
+{
+  "component": "Phase 4 PQ Codebooks",
+  "configuration": {
+    "dimension": 128,
+    "num_subquantizers": 16,
+    "centroids_per_subquantizer": 256,
+    "nbits": 8,
+    "random_seed": 42,
+    "niter": 25,
+    "training_sample_count": 100000,
+    "subvector_dimension": 8,
+    "code_bytes_per_vector": 16
+  },
+  "environment": {
+    "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "numpy_version": "2.5.3",
+    "faiss_version": "1.15.1"
+  },
+  "training_stats": {
+    "training_time_seconds": 21.3377,
+    "total_centroids": 4096,
+    "total_centroid_floats": 32768,
+    "codebook_memory_bytes": 131072,
+    "centroid_min": -2.4769203662872314,
+    "centroid_max": 2.6031136512756348,
+    "centroid_mean": 0.0011234099511057138,
+    "centroid_std": 0.8424819111824036
+  },
+  "artifacts": {
+    "pq_codebooks_npy": {
+      "file": "pq_codebooks.npy",
+      "sha256": "dfaae246699e1e75dfb87a7480a6057a8745fbe824a3365a1456b6901426559c",
+      "bytes": 131200,
+      "shape": [
+        16,
+        256,
+        8
+      ],
+      "dtype": "float32"
+    },
+    "faiss_pq_quantizer_bin": {
+      "file": "faiss_pq_quantizer.bin",
+      "sha256": "16b903aee9b726269feb6bcb4d4631d7549227c9090b131c0d67329d7580210b",
+      "bytes": 131104
+    }
+  }
+}

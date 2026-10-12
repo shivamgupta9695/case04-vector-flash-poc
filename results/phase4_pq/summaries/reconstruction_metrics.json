@@ -1,0 +1,29 @@
+{
+  "num_vectors_evaluated": 100000,
+  "dimension": 128,
+  "reconstruction_time_seconds": 0.1212,
+  "reconstruction_throughput_vps": 824868.1,
+  "aggregate_metrics": {
+    "mse": 0.317669,
+    "rmse": 0.563621,
+    "relative_l2_error": 0.563733
+  },
+  "per_vector_l2_error": {
+    "mean": 6.360514,
+    "std": 0.453293,
+    "min": 3.929261,
+    "p50": 6.341944,
+    "p95": 7.135423,
+    "p99": 7.50313,
+    "max": 8.578202
+  },
+  "per_vector_relative_error": {
+    "mean": 0.563488,
+    "std": 0.021285,
+    "min": 0.378497,
+    "p50": 0.563957,
+    "p95": 0.596862,
+    "p99": 0.611146,
+    "max": 0.653397
+  }
+}

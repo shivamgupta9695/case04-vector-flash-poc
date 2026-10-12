@@ -1,0 +1,156 @@
+[
+  {
+    "input": {
+      "content": {
+        "search_phase": {
+          "beam_width": 4,
+          "distance": "squared_l2",
+          "groundtruth": "/mnt/c/Users/shivam.gupta/Desktop/Case04_Vector_POC/results/phase5_diskann/prepared/cold_groundtruth_local.bin",
+          "num_nodes_to_cache": null,
+          "num_threads": 4,
+          "post_processor": null,
+          "queries": "/mnt/c/Users/shivam.gupta/Desktop/Case04_Vector_POC/results/phase5_diskann/prepared/query_vectors.bin",
+          "recall_at": 10,
+          "search_io_limit": null,
+          "search_list": [
+            10,
+            20,
+            40,
+            80
+          ],
+          "search_mode": {
+            "adaptive_l": null,
+            "is_flat_search": false
+          },
+          "vector_filters_file": null
+        },
+        "source": {
+          "data_type": "float32",
+          "disk-index-source": "Load",
+          "load_path": "/mnt/c/Users/shivam.gupta/Desktop/Case04_Vector_POC/results/phase5_diskann/index/cold_disk_index"
+        }
+      },
+      "type": "disk-index"
+    },
+    "results": {
+      "build": null,
+      "search": {
+        "beam_width": 4,
+        "distance": "squared_l2",
+        "is_flat_search": false,
+        "num_nodes_to_cache": null,
+        "num_threads": 4,
+        "recall_at": 10,
+        "search_results_per_l": [
+          {
+            "cache_hit_percentage": 0.0,
+            "mean_comparisons": 670.61,
+            "mean_cpu_time": 95.678,
+            "mean_hops": 22.624,
+            "mean_io_time": 5588.835,
+            "mean_ios": 22.624,
+            "mean_latency": 5693.336,
+            "mean_pq_preprocess_time": 8.823,
+            "p95_latency": 8047,
+            "p999_latency": 12808,
+            "qps": 695.1476440429688,
+            "recall": 11.640000343322754,
+            "search_l": 10
+          },
+          {
+            "cache_hit_percentage": 0.0,
+            "mean_comparisons": 1013.375,
+            "mean_cpu_time": 137.875,
+            "mean_hops": 34.964,
+            "mean_io_time": 8488.153,
+            "mean_ios": 34.964,
+            "mean_latency": 8635.476,
+            "mean_pq_preprocess_time": 9.448,
+            "p95_latency": 11638,
+            "p999_latency": 14609,
+            "qps": 461.4276428222656,
+            "recall": 18.329999923706055,
+            "search_l": 20
+          },
+          {
+            "cache_hit_percentage": 0.0,
+            "mean_comparisons": 1598.689,
+            "mean_cpu_time": 223.61,
+            "mean_hops": 57.062,
+            "mean_io_time": 13788.928,
+            "mean_ios": 57.062,
+            "mean_latency": 14023.396,
+            "mean_pq_preprocess_time": 10.858,
+            "p95_latency": 17769,
+            "p999_latency": 22311,
+            "qps": 284.8426513671875,
+            "recall": 27.68000030517578,
+            "search_l": 40
+          },
+          {
+            "cache_hit_percentage": 0.0,
+            "mean_comparisons": 2592.786,
+            "mean_cpu_time": 598.163,
+            "mean_hops": 97.504,
+            "mean_io_time": 37365.922,
+            "mean_ios": 97.504,
+            "mean_latency": 37979.113,
+            "mean_pq_preprocess_time": 15.028,
+            "p95_latency": 49097,
+            "p999_latency": 156242,
+            "qps": 105.2159423828125,
+            "recall": 40.150001525878906,
+            "search_l": 80
+          }
+        ],
+        "span_metrics": {
+          "spans": [
+            {
+              "metrics": {
+                "cpu_time": 0.0,
+                "duration_seconds": 0.044337878,
+                "elapsed_cycles": 0.0,
+                "peak_memory_usage": 0.009181976318359375
+              },
+              "span_name": "search_disk_index-index_loaded"
+            },
+            {
+              "metrics": {
+                "duration_seconds": 1.438947196
+              },
+              "span_name": "search-with-L=10-bw=4"
+            },
+            {
+              "metrics": {
+                "duration_seconds": 2.167580639
+              },
+              "span_name": "search-with-L=20-bw=4"
+            },
+            {
+              "metrics": {
+                "duration_seconds": 3.511169361
+              },
+              "span_name": "search-with-L=40-bw=4"
+            },
+            {
+              "metrics": {
+                "duration_seconds": 9.504992125
+              },
+              "span_name": "search-with-L=80-bw=4"
+            },
+            {
+              "metrics": {
+                "cpu_time": 0.0,
+                "duration_seconds": 16.623020044,
+                "elapsed_cycles": 0.0,
+                "peak_memory_usage": 0.010425567626953125
+              },
+              "span_name": "search_disk_index-search_completed"
+            }
+          ]
+        },
+        "uses_vector_filters": false
+      }
+    }
+  }
+]

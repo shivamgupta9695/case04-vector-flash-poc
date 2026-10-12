@@ -1,0 +1,20 @@
+{
+  "target_vector_id": 9000,
+  "initial_state": {
+    "resident_in_dram": false,
+    "hotness": 0.0,
+    "tier": "SSD"
+  },
+  "post_burst_state": {
+    "resident_in_dram": true,
+    "hotness": 8.353768348693848,
+    "tier": "DRAM"
+  },
+  "post_decay_state": {
+    "resident_in_dram": false,
+    "hotness": 0.9295177459716797,
+    "tier": "SSD"
+  },
+  "promotion_verified": true,
+  "demotion_verified": true
+}

@@ -1,0 +1,68 @@
+[
+  {
+    "vector_id": 0,
+    "tier": "HOT",
+    "full_vector_uri": "storage/ssd_vectors/vectors.bin",
+    "byte_offset": 0,
+    "pq_code_index": 0,
+    "hotness": 0.0,
+    "graph_metadata": {
+      "phase5_diskann_node": null
+    }
+  },
+  {
+    "vector_id": 1,
+    "tier": "HOT",
+    "full_vector_uri": "storage/ssd_vectors/vectors.bin",
+    "byte_offset": 512,
+    "pq_code_index": 1,
+    "hotness": 0.0,
+    "graph_metadata": {
+      "phase5_diskann_node": null
+    }
+  },
+  {
+    "vector_id": 17999,
+    "tier": "HOT",
+    "full_vector_uri": "storage/ssd_vectors/vectors.bin",
+    "byte_offset": 9215488,
+    "pq_code_index": 17999,
+    "hotness": 0.0,
+    "graph_metadata": {
+      "phase5_diskann_node": null
+    }
+  },
+  {
+    "vector_id": 18000,
+    "tier": "COLD",
+    "full_vector_uri": "storage/ssd_vectors/vectors.bin",
+    "byte_offset": 9216000,
+    "pq_code_index": 18000,
+    "hotness": 0.0,
+    "graph_metadata": {
+      "phase5_diskann_node": true
+    }
+  },
+  {
+    "vector_id": 50000,
+    "tier": "COLD",
+    "full_vector_uri": "storage/ssd_vectors/vectors.bin",
+    "byte_offset": 25600000,
+    "pq_code_index": 50000,
+    "hotness": 0.0,
+    "graph_metadata": {
+      "phase5_diskann_node": true
+    }
+  },
+  {
+    "vector_id": 99999,
+    "tier": "COLD",
+    "full_vector_uri": "storage/ssd_vectors/vectors.bin",
+    "byte_offset": 51199488,
+    "pq_code_index": 99999,
+    "hotness": 0.0,
+    "graph_metadata": {
+      "phase5_diskann_node": true
+    }
+  }
+]

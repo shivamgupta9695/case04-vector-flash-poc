@@ -1,0 +1,49 @@
+{
+  "method": "HNSW (M=32, ef=160)",
+  "index_type": "IndexHNSWFlat",
+  "m": 32,
+  "ef_construction": 40,
+  "ef_search": 160,
+  "build_time_sec": 12.3897,
+  "index_size_mb": 74.79,
+  "recall_at_1": 0.819,
+  "recall_at_5": 0.7782,
+  "recall_at_10": 0.7566,
+  "batch_avg_latency_ms": 0.5064,
+  "p50_latency_ms": 0.8754,
+  "p95_latency_ms": 1.3121,
+  "p99_latency_ms": 1.5382,
+  "qps": 1974.66,
+  "validation_pass": true,
+  "raw_details": {
+    "k": 10,
+    "recall_at_1": 0.819,
+    "recall_at_5": 0.7782,
+    "recall_at_10": 0.7566,
+    "batch_avg_latency_ms": 0.5064,
+    "batch_mean_time_sec": 0.50642,
+    "batch_min_time_sec": 0.49844,
+    "batch_max_time_sec": 0.5161,
+    "batch_runs": [
+      0.50527,
+      0.49844,
+      0.50695,
+      0.50532,
+      0.5161
+    ],
+    "qps": 1974.66,
+    "p50_latency_ms": 0.8754,
+    "p95_latency_ms": 1.3121,
+    "p99_latency_ms": 1.5382,
+    "sample_size_individual": 200,
+    "validation": {
+      "is_valid": true,
+      "num_queries": 1000,
+      "k": 10,
+      "has_negative_ids": false,
+      "has_out_of_bounds_ids": false,
+      "has_duplicate_ids": false,
+      "rows_with_duplicates": 0
+    }
+  }
+}
